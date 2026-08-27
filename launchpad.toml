@@ -1,0 +1,12 @@
+# The Launchpad CLI and SDK guide is a folder of HTML.
+#
+# `[static]` is read before every other branch of framework detection and
+# overrides its disqualifiers, which is what makes this repo deployable: it has
+# a package.json, and without this table detection would refuse it rather than
+# serve it. Launchpad never runs `npm install` or `astro build` for an app, so
+# `dist/` is committed and is the deliverable.
+#
+# No `fallback`: Starlight emits a real file for every route, and a fallback
+# would turn a missing asset into an HTML page.
+[static]
+root = "dist"

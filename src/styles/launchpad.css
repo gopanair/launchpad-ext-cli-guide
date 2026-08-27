@@ -1,0 +1,330 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Launchpad documentation theme — Starlight wearing the platform's own skin.
+
+   Both guides carry a byte-identical copy of this file, for the reason the
+   example kit does: a reader moving between the user guide, the admin guide
+   and the product itself should not notice three designs.
+
+   The values are lifted from `web/src/index.css` in the platform repo, not
+   approximated. They are oklch there and oklch here, so a palette change in
+   the product is a copy rather than a colour-matching exercise.
+
+   Starlight names its tokens for their role in its *dark* theme, which is why
+   `--sl-color-white` is the darkest ink below and `--sl-color-black` is the
+   page. That is Starlight's convention, not a mistake.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Launchpad is light-only, so every selector Starlight might switch on gets
+   the same values. The theme toggle is removed in astro.config.mjs by
+   overriding the component; this is the belt to that pair of braces, and it is
+   what keeps a reader whose OS is dark from getting a half-dark page. */
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  color-scheme: light;
+
+  /* ── The platform's palette, under its own names ───────────────────────── */
+  --lp-background: oklch(0.98 0.002 250);
+  --lp-card: oklch(1 0 0);
+  --lp-foreground: oklch(0.145 0 0);
+  --lp-muted: oklch(0.965 0.005 264);
+  --lp-muted-foreground: oklch(0.5 0 0);
+  --lp-accent: oklch(0.955 0.015 264);
+  --lp-accent-foreground: oklch(0.318 0.1 264);
+  --lp-border: oklch(0.912 0.005 264);
+  --lp-primary: oklch(0.488 0.18 264);
+  --lp-primary-foreground: oklch(0.985 0 0);
+  --lp-radius: 0.5rem;
+
+  /* Tone — five meanings, four slots each. The platform's table, unedited. */
+  --lp-ok-surface: oklch(0.979 0.021 166.113);
+  --lp-ok-border: oklch(0.905 0.093 164.15);
+  --lp-ok-fg: oklch(0.508 0.118 165.612);
+
+  --lp-attention-surface: oklch(0.987 0.022 95.277);
+  --lp-attention-border: oklch(0.924 0.12 95.746);
+  --lp-attention-fg: oklch(0.555 0.163 48.998);
+
+  --lp-danger-surface: oklch(0.971 0.013 17.38);
+  --lp-danger-border: oklch(0.885 0.062 18.334);
+  --lp-danger-fg: oklch(0.505 0.213 27.518);
+
+  --lp-info-surface: oklch(0.962 0.018 272.314);
+  --lp-info-border: oklch(0.87 0.065 274.039);
+  --lp-info-fg: oklch(0.457 0.24 277.023);
+
+  --lp-neutral-surface: oklch(0.985 0 0);
+  --lp-neutral-border: oklch(0.92 0.004 286.32);
+  --lp-neutral-fg: oklch(0.442 0.017 285.786);
+
+  /* The one dark surface in a light-only product, and it is dark because a
+     terminal is. Code blocks are read against it here for the same reason the
+     log pane is in the app. */
+  --lp-terminal: oklch(0.141 0.005 285.823);
+  --lp-terminal-foreground: oklch(0.92 0.004 286.32);
+
+  /* ── Mapped onto Starlight ─────────────────────────────────────────────── */
+  --sl-color-white: var(--lp-foreground);
+  --sl-color-gray-1: oklch(0.205 0 0);
+  --sl-color-gray-2: oklch(0.35 0 0);
+  --sl-color-gray-3: var(--lp-muted-foreground);
+  --sl-color-gray-4: oklch(0.65 0.005 264);
+  --sl-color-gray-5: oklch(0.82 0.005 264);
+  --sl-color-gray-6: var(--lp-border);
+  --sl-color-gray-7: var(--lp-muted);
+  --sl-color-black: var(--lp-background);
+
+  --sl-color-accent-low: var(--lp-accent);
+  --sl-color-accent: var(--lp-primary);
+  --sl-color-accent-high: var(--lp-accent-foreground);
+
+  --sl-color-text: var(--lp-foreground);
+  --sl-color-text-accent: var(--lp-primary);
+  --sl-color-text-invert: var(--lp-primary-foreground);
+
+  --sl-color-bg: var(--lp-background);
+  --sl-color-bg-nav: var(--lp-card);
+  --sl-color-bg-sidebar: var(--lp-card);
+  --sl-color-bg-inline-code: var(--lp-muted);
+  --sl-color-bg-accent: var(--lp-primary);
+
+  --sl-color-hairline: var(--lp-border);
+  --sl-color-hairline-light: var(--lp-border);
+  --sl-color-hairline-shade: var(--lp-border);
+
+  --sl-color-backdrop-overlay: oklch(0.145 0 0 / 0.4);
+
+  /* Asides, mapped to the five tones rather than to Starlight's rainbow. Note
+     is info, tip is ok, caution is attention, danger is danger — the same four
+     words the product uses for the same four meanings. */
+  --sl-color-blue-low: var(--lp-info-surface);
+  --sl-color-blue: var(--lp-info-border);
+  --sl-color-blue-high: var(--lp-info-fg);
+
+  --sl-color-green-low: var(--lp-ok-surface);
+  --sl-color-green: var(--lp-ok-border);
+  --sl-color-green-high: var(--lp-ok-fg);
+
+  --sl-color-orange-low: var(--lp-attention-surface);
+  --sl-color-orange: var(--lp-attention-border);
+  --sl-color-orange-high: var(--lp-attention-fg);
+
+  --sl-color-red-low: var(--lp-danger-surface);
+  --sl-color-red: var(--lp-danger-border);
+  --sl-color-red-high: var(--lp-danger-fg);
+
+  --sl-color-purple-low: var(--lp-accent);
+  --sl-color-purple: var(--lp-border);
+  --sl-color-purple-high: var(--lp-accent-foreground);
+
+  --sl-color-asides-text-accent: var(--lp-primary);
+
+  /* Type. Geist and Geist Mono are the platform's two voices; the mono one
+     earns its place the same way it does there — a slug, an environment
+     variable, a path and a command are all things a reader copies. */
+  --sl-font: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --sl-shadow-sm: 0 1px 2px 0 oklch(0.145 0 0 / 0.05);
+  --sl-shadow-md: 0 1px 3px 0 oklch(0.145 0 0 / 0.08), 0 1px 2px -1px oklch(0.145 0 0 / 0.06);
+  --sl-shadow-lg: 0 4px 12px -2px oklch(0.145 0 0 / 0.1);
+
+  --sl-content-width: 48rem;
+
+  /* Type scale — the product's, not Starlight's. Launchpad's page heading is
+     `text-2xl` and its markdown h2 is `text-base` with a rule under it; a docs
+     site gets one step more air than that and no more. The default scale is
+     roughly half again as large at every level, which is what made a Starlight
+     page read as a different product. */
+  --sl-text-h1: 1.5rem;
+  --sl-text-h2: 1.125rem;
+  --sl-text-h3: 1rem;
+  --sl-text-h4: 0.9375rem;
+  --sl-text-h5: 0.875rem;
+  --sl-text-body: 0.9375rem;
+  --sl-text-body-sm: 0.875rem;
+  --sl-text-code: 0.875rem;
+  --sl-text-code-sm: 0.8125rem;
+}
+
+/* ── Chrome ─────────────────────────────────────────────────────────────────
+   Starlight's header floats over the page; the platform's does not. One rule
+   each, rather than a rewrite: this is a docs site borrowing an identity, not
+   a reimplementation of the app's shell. */
+
+.header {
+  border-bottom: 1px solid var(--lp-border);
+  background: var(--lp-card);
+  box-shadow: none;
+}
+
+#starlight__sidebar {
+  border-right: 1px solid var(--lp-border);
+}
+
+/* The wordmark. Starlight makes the site title a large accent-coloured link;
+   the product's is ink-coloured, one line of body text tall, and reads as
+   chrome rather than as the page's first heading. */
+a.site-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  color: var(--lp-foreground);
+  text-decoration: none;
+  gap: 0.5rem;
+}
+
+a.site-title img {
+  height: 1.25rem;
+  width: auto;
+}
+
+/* The tagline under the title in the sidebar, where Starlight puts it. */
+.site-title + * {
+  color: var(--lp-muted-foreground);
+}
+
+/* Sidebar links. Active is the accent *surface* with accent ink — the pair the
+   platform's palette carries for exactly this — rather than Starlight's solid
+   fill, which reads as a button. */
+#starlight__sidebar a {
+  font-size: 0.875rem;
+  border-radius: calc(var(--lp-radius) - 2px);
+}
+
+#starlight__sidebar a[aria-current="page"],
+#starlight__sidebar a[aria-current="page"]:hover,
+#starlight__sidebar a[aria-current="page"]:focus {
+  background: var(--lp-accent);
+  color: var(--lp-accent-foreground);
+  font-weight: 500;
+}
+
+#starlight__sidebar summary,
+#starlight__sidebar .group-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--lp-foreground);
+}
+
+/* The right-hand contents rail. */
+starlight-toc a {
+  font-size: 0.8125rem;
+}
+
+/* ── Prose ──────────────────────────────────────────────────────────────────
+   Tighter than Starlight's default and closer to the product's density. An
+   enterprise reader is scanning for the one paragraph that answers them. */
+
+.sl-markdown-content {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.sl-markdown-content :is(h2, h3, h4) {
+  letter-spacing: -0.011em;
+  font-weight: 600;
+}
+
+/* The rule under an h2 belongs on Starlight's heading *wrapper*, not on the
+   heading. The wrapper is a shrink-wrapped flex box holding the heading and its
+   anchor link, so a border on the h2 stops at the last word and reads as an
+   underline rather than as the section rule the product draws. */
+.sl-markdown-content .sl-heading-wrapper.level-h2 {
+  width: 100%;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--lp-border);
+}
+
+/* Heading anchors are a tool, not decoration: muted, and only there on hover
+   or focus, which is how the product treats every secondary affordance. */
+.sl-markdown-content .sl-anchor-link {
+  color: var(--lp-muted-foreground);
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4):hover .sl-anchor-link,
+.sl-markdown-content .sl-anchor-link:focus {
+  opacity: 1;
+}
+
+.sl-markdown-content .sl-anchor-link .anchor-icon {
+  width: 0.75em;
+  height: 0.75em;
+}
+
+/* Inline code is a thing you copy, so it gets an edge rather than only a tint —
+   the same treatment the product gives a slug or a variable name. */
+.sl-markdown-content :not(pre) > code {
+  border: 1px solid var(--lp-border);
+  border-radius: calc(var(--lp-radius) - 3px);
+  padding: 0.15em 0.35em;
+  font-size: 0.875em;
+  color: var(--lp-accent-foreground);
+}
+
+/* Code blocks are read against the terminal surface. */
+.expressive-code .frame pre,
+.sl-markdown-content pre {
+  border-radius: var(--lp-radius);
+  border: 1px solid var(--lp-border);
+}
+
+/* Tables — the platform's, which are bordered and quiet rather than zebra. */
+.sl-markdown-content table {
+  display: table;
+  width: 100%;
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-radius);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.sl-markdown-content :is(th, td) {
+  border-bottom: 1px solid var(--lp-border);
+  padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content thead th {
+  background: var(--lp-muted);
+  font-weight: 600;
+  text-align: left;
+}
+
+.sl-markdown-content tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+/* Below reading width, hand the scroll back. A table that overflows its column
+   is worse than one that scrolls inside it. */
+@media (max-width: 50rem) {
+  .sl-markdown-content table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* Asides carry the tone border the product puts on a banner. */
+.sl-markdown-content .starlight-aside {
+  border-radius: var(--lp-radius);
+  border-inline-start-width: 3px;
+}
+
+/* Cards on the landing page read as the product's cards. */
+.card {
+  border-radius: var(--lp-radius);
+  border-color: var(--lp-border);
+  background: var(--lp-card);
+}
+
+/* Search, which is the reason this stack was chosen — give it the product's
+   input treatment rather than Starlight's pill. */
+site-search button[data-open-modal] {
+  border-radius: var(--lp-radius);
+  border-color: var(--lp-border);
+  background: var(--lp-card);
+}

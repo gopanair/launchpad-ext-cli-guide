@@ -1,0 +1,40 @@
+---
+title: Launchpad CLI and SDK
+description: The lp command-line client, and the app SDK your code calls back with.
+template: splash
+hero:
+  tagline: One binary to push code up. One import to call the platform back.
+  actions:
+    - text: Installing lp
+      link: cli/installing/
+      icon: right-arrow
+    - text: What the SDK is
+      link: sdk/what-it-is/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="lp" icon="laptop">
+    Sixteen commands. Push the working tree, follow a log, run a job and read
+    its exit code. [The sixteen commands](cli/commands/)
+  </Card>
+  <Card title="The SDK" icon="seti:powershell">
+    Go, Node, Python and R. One import, one entry point, the same model in every
+    language. [What the SDK is](sdk/what-it-is/)
+  </Card>
+  <Card title="Who is asking" icon="approve-check">
+    Six words, signed per app per start, verified with no round trip.
+    [Who is asking](sdk/viewer/)
+  </Card>
+  <Card title="CI" icon="seti:config">
+    Exit codes are a contract, and a run's outcome is one of them.
+    [CI and automation](cli/ci/)
+  </Card>
+</CardGrid>
+
+:::note
+Building an app is the **user guide**; running the install is the **admin
+guide**. Both are separate apps your administrator can install from the Gallery.
+:::
