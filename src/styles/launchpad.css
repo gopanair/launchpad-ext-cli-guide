@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Launchpad documentation theme — Starlight wearing the platform's own skin.
 
-   Both guides carry a byte-identical copy of this file, for the reason the
-   example kit does: a reader moving between the user guide, the admin guide
-   and the product itself should not notice three designs.
+   All three guides carry a byte-identical copy of this file, for the reason
+   the example kit does: a reader moving between the user guide, the admin
+   guide, the CLI guide and the product itself should not notice four designs.
 
    The values are lifted from `web/src/index.css` in the platform repo, not
    approximated. They are oklch there and oklch here, so a palette change in
@@ -162,6 +162,13 @@
   border-right: 1px solid var(--lp-border);
 }
 
+/* Starlight hangs a vertical divider off the social icons to separate them
+   from the theme toggle. Both components are overridden away here, so the
+   divider is left ruling off an empty corner of the header. */
+.social-icons:empty {
+  display: none;
+}
+
 /* The wordmark. Starlight makes the site title a large accent-coloured link;
    the product's is ink-coloured, one line of body text tall, and reads as
    chrome rather than as the page's first heading. */
@@ -314,11 +321,109 @@ starlight-toc a {
   border-inline-start-width: 3px;
 }
 
-/* Cards on the landing page read as the product's cards. */
+/* ── The landing page ───────────────────────────────────────────────────────
+   The splash template is built for a marketing page with an illustration next
+   to the words. None of the three guides has one, so every default here is
+   sized for a picture that never arrives: a two-column grid whose second
+   column is empty, a display-sized title wrapping inside the first, and enough
+   padding above and below to push the cards off the fold. */
+
+.hero {
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding-block: 3rem 2.5rem;
+}
+
+.hero .stack {
+  max-width: 44rem;
+  gap: 1.25rem;
+}
+
+/* The product has no display type. This is the page's heading, at the size the
+   platform gives a page heading, not a billboard. */
+.hero h1 {
+  font-size: clamp(2rem, calc(1.25rem + 2vw), 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.hero .tagline {
+  max-width: 38rem;
+  font-size: 1.0625rem;
+  color: var(--lp-muted-foreground);
+}
+
+/* Actions are buttons, and the platform's buttons are not pills — nor are they
+   twice the height of the text in them. `minimal` is Starlight's word for the
+   quiet one; the platform draws that as an outline, because bare text sitting
+   next to a button reads as a caption rather than as the second choice. The
+   variant is a bare class on the link — `primary`, `minimal` — alongside
+   `sl-link-button`, so these are written against those rather than `.action`,
+   which is the name in the docs and not the name in the DOM. */
+.hero .actions {
+  gap: 0.75rem;
+}
+
+.hero .actions .sl-link-button {
+  margin: 0;
+  border-radius: var(--lp-radius);
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+
+.hero .actions .sl-link-button.primary {
+  background: var(--lp-primary);
+  border-color: var(--lp-primary);
+  color: var(--lp-primary-foreground);
+}
+
+.hero .actions .sl-link-button.minimal {
+  padding-inline: 0.875rem;
+  border-color: var(--lp-border);
+  background: var(--lp-card);
+  color: var(--lp-foreground);
+}
+
+.hero .actions .sl-link-button.minimal:hover {
+  background: var(--lp-muted);
+}
+
+/* Cards read as the product's cards. Starlight staggers the grid and tints
+   each card's icon a different hue by position — a four-colour rotation the
+   platform's palette does not have and its surfaces do not do. */
+.card-grid {
+  gap: 1rem;
+}
+
+.card-grid.stagger {
+  padding-bottom: 0;
+}
+
+.card-grid.stagger > .card:nth-child(2n) {
+  transform: none;
+}
+
 .card {
+  padding: 1.25rem;
+  gap: 0.5rem;
   border-radius: var(--lp-radius);
   border-color: var(--lp-border);
   background: var(--lp-card);
+}
+
+.card .title {
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+}
+
+.card .icon {
+  border-radius: calc(var(--lp-radius) - 2px);
+  border-color: var(--lp-border);
+  background: var(--lp-muted);
+  color: var(--lp-muted-foreground);
 }
 
 /* Search, which is the reason this stack was chosen — give it the product's
