@@ -6,6 +6,12 @@ description: Getting the binary, and what it is for.
 `lp` is Launchpad's command-line client: a single Go binary with no runtime and
 nothing to install alongside it.
 
+:::note
+This guide is the two developer surfaces: `lp`, and the app SDK your code calls
+back with. Building an app is the **user guide**; running the install is the
+**admin guide**. Both are separate apps, installable from the gallery.
+:::
+
 ## Install
 
 Download the binary for your platform from the public download repository and
