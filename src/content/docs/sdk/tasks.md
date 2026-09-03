@@ -22,6 +22,30 @@ lp.task(req.headers)
 **`null` when the request is not a firing.** An ordinary visit to the same path
 gets `null`, so one handler can serve both and behave differently.
 
+## It carries the task's name
+
+`task.name` is **the name of the task that fired** — `refresh` — so one endpoint
+serving several can tell them apart without reading its own configuration back:
+
+```python
+t = lp.task(req.headers)
+if t and t.name == "nightly":
+    ...
+```
+
+It is the name in all four SDKs. **Nothing gives your app its own cron
+expression**: a task is a request to a path you published, and the schedule is
+the platform's business, not the handler's.
+
+## A task may have no schedule at all
+
+The cron expression is optional. A task created without one is **on demand**:
+nothing fires it on a timer, and `Run now`, `lp task run` and your app's own
+trigger all still do.
+
+Your handler cannot tell the difference and does not need to — a firing is a
+firing. What changes is only whether anything fires it unasked.
+
 ## The run's own log
 
 ```js

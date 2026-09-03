@@ -24,6 +24,16 @@ retry it. A refusal is an answer; do not.
 **2 is yours.** Usage or configuration — a missing `[app]` table, a token
 without its URL, a flag combination that is refused. It will not fix itself.
 
+Three things land on `2` that a caller might expect on `1` or `3`, all for the
+same reason — nothing was attempted, so nothing ran and failed:
+
+- **A locked app.** `lp deploy` against one is `2`, and the refusal names who
+  locked it: an administrator, or the dependency sweep.
+- **A name that does not resolve.** `lp job run <unknown>`,
+  `lp task run <unknown>`, `lp link` in a directory already linked.
+- **A path matching no route.** `lp api GET nosuchroute` is `2` naming the path,
+  with `code: route_not_found` — a typo, not a credential problem.
+
 ## A run's outcome is the exit code
 
 `lp job run` and `lp task run` **wait by default**, and the run's outcome
@@ -38,6 +48,10 @@ any output.
 
 **`skipped` is exit 1 for a task.** A firing that did not happen is not a
 success, and collapsing it into 0 would make a broken schedule invisible.
+
+**The exit code is the run's in every rendering, `--json` included.** The
+document prints on stdout *and* the process exits non-zero. A caller reading the
+document does not have to also decide what it means.
 
 ## `--wait` on a restart
 

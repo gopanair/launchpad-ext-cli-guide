@@ -53,6 +53,34 @@ lp deploy --watch <id>    # rejoin one you left
 lp deploy --json          # for a script
 ```
 
+**`--watch` on a build that has already failed still tells you why**, not just
+that it is over — which is what makes it safe to run from a script a few seconds
+behind the deploy.
+
+## When it fails, in full
+
+A failed deploy carries a **reason key**, the **whole message**, and the detail
+the reason names — a tail of the build log, or the dependency findings. All
+three are in the `--json` result object, so a program has something to act on
+rather than a paragraph to match against.
+
+| Reason | Where the answer is |
+|---|---|
+| `source_unavailable` · `source_blocked` | The URL, the credential, or your administrator's source policy |
+| `dependency_blocked` | `lp deps` — the packages, the advisories, the fixed versions |
+| `unsupported_framework` · `manifest_invalid` · `runtime_version` | The declaration, or `launchpad.toml` |
+| `build_failed` | The **build** log |
+| `publish_failed` | The artifact store |
+| `start_failed` · `not_ready` | The **app** log, for the second one |
+| `internal_error` | Retry, then tell somebody |
+
+**A deploy also says what it ignored.** Warnings are printed and carried in the
+`--json` result — a `[tasks]` table in `launchpad.toml` produces one, because
+tasks are not declared in the manifest.
+
+**A locked app is exit 2**, and the refusal names whether an administrator or the
+dependency sweep locked it.
+
 ## Creating rather than updating
 
 ```bash

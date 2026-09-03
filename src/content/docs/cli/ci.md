@@ -46,11 +46,37 @@ lp job run migrate --app my-app --yes  # 1 if the migration fails
 Three real gates, no output parsing. Add `--json` if you want to record
 anything.
 
+## What `--json` gives a program
+
+`--json` is on **every** command — a test walks the dispatch table, so a command
+without a machine-readable answer fails the build.
+
+Two properties to write your parser against:
+
+- **One JSON document per line, not one per invocation.** A failed firing prints
+  the run and then the refusal. Read it a line at a time.
+- **A refusal is a document too**, on stdout: `error`, `kind`, `code`, `exit`.
+  The sentence still goes to stderr for whoever is watching. So a script never
+  parses English to find out what happened — including for a bad flag, which
+  reads the same one line in both places, with the `lp:` prefix.
+
+**A failed deploy carries why in full**: the reason key, the whole message, and
+the detail the reason names — a tail of the build log, or the dependency
+findings. So a program that gets `dependency_blocked` has something to bump,
+rather than a paragraph to regex.
+
+A deploy also reports **what it ignored** as `warnings`, printed and carried in
+the `--json` result. A `[tasks]` table in `launchpad.toml` produces one.
+
 ## Scanning the estate
 
 A deploy key may read the scan-target list — the only route under `/admin`
 either key scope reaches. An `lp_` app key may not, because an app key is a
 grant on one app and the estate is not one app.
+
+Two neighbouring `/admin` reads are refused to **every** key class, deploy keys
+included: the reach inventory and the compliance surface. A scanner needs
+addresses; a posture is a thing a person reads from a browser.
 
 Send `X-Launchpad-Scan: 1` on scan traffic. It **grants nothing**; it only stops
 the request counting as evidence somebody wanted the app, so scanning does not

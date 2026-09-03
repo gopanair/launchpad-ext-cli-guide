@@ -21,9 +21,19 @@ That repository holds **binaries and no source**. `lp` is built from the
 platform repository as a second Go module, and published outward — so the
 download repository is a delivery artifact rather than a mirror of the code.
 
+The matrix is Linux, macOS and Windows on amd64 and arm64 —
+`lp_{linux,darwin}_{amd64,arm64}`, `lp_windows_amd64.exe` — with a
+`SHA256SUMS` beside them. The installer script covers the first two.
+
 ```bash
 lp --version
+lp 0.6.3 (build 4f2a1c9e)
 ```
+
+**The build id is there so two builds of one tag are tellable apart.** A tag is
+never re-pointed, so this is not about drift in the release — it is about
+telling a binary you built from a binary you downloaded, and about a fix that
+was published after a tag went out.
 
 ## What it is for
 

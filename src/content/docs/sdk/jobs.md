@@ -93,3 +93,25 @@ Retries are **opt-in, unattended-only, and never silent**.
 ```js
 lp.run     // this run's own view of itself; null everywhere else
 ```
+
+Report progress, read the payload, write output — all through `run`, and never
+by handling a credential yourself. Two things about it are worth knowing before
+you write the handler:
+
+**A run given no payload is given no input location.** The variable is absent
+rather than pointing at an object that was never written, so *"was I given
+one?"* is answerable by looking. A run started with parameters alone has no
+input — read the parameters.
+
+**Read the payload at the start of the run.** The link the platform minted for
+it is presigned and expires; a job that reads its input an hour in gets a
+refusal about the link, and the SDKs say so in those words rather than as a
+generic failure.
+
+**A job holds no app token, and is told why.** All four SDKs name the reason
+rather than failing as though something were broken: a run acts as the run, and
+the calls it may make are the run's own.
+
+`command` is run with the release's own interpreter — `python jobs/report.py`
+means the Python your app resolved, not whichever one is first on the image's
+`PATH`.

@@ -55,6 +55,43 @@ Resolved **by name**, not by path. Your app says `"reports"` and the platform
 resolves it to whatever the administrator mapped — so the same code works in
 shared and isolated mode, and on a different install.
 
+## When one name is two mounts
+
+A mapping's identity is `(resource, app, folder)`, so an administrator can
+attach one resource **twice**: the root read-only, and a folder at `write`, at
+two paths in one workload. That is the shape the feature exists for — a corpus
+you read and a drop you write — and both arrive under the same name.
+
+The folder is what tells them apart:
+
+```python
+lp.storage("drop", folder="backup").path
+lp.store("drop", folder="backup")
+```
+```js
+lp.storage("drop", { folder: "backup" });
+```
+```go
+lp.StorageIn("drop", "backup")     // Go has no keyword arguments
+lp.StoreIn("drop", "backup")
+```
+```r
+storage("drop", "backup")
+```
+
+**A name matching two mounts, with no folder named, raises** — listing what is
+mounted and at what level — rather than picking one. Returning the first would
+answer by the alphabetical order of paths somebody else chose, which is a silent
+answer to a question the caller did not know they were asking.
+
+Omitting the folder means *do not care*, which is the ordinary case and is only
+ambiguous when there genuinely is more than one. An empty folder names the root
+explicitly.
+
+Every key the platform puts in the storage description is a key every SDK reads,
+in both directions, and a test holds that — so a mount you can see on the app's
+page is a mount you can address from code.
+
 ## The rules that will bite you
 
 **A mapping is an app's and a grant is a person's, and neither implies the

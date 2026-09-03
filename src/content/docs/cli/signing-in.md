@@ -54,6 +54,28 @@ Setting both `LAUNCHPAD_TOKEN` and `LAUNCHPAD_TOKEN_FILE` is a **refusal, not a
 precedence rule**.
 :::
 
+## A key has a scope
+
+A personal key is **`read` or `full`**, chosen when it is created and never
+edited. Full does everything you can do; read reaches every `GET` you are
+allowed and is refused every other method.
+
+**`lp login` always creates a full-scope key** — there is no `--scope`. So a
+read-scoped credential in a pipeline got there deliberately: somebody minted one
+in the browser and handed it over with `--token-stdin`.
+
+When one is refused a write you get the install's own sentence plus a line
+saying what happened, because otherwise a pipeline log reads as a permission
+failure rather than as the credential doing exactly what it was created to do. A
+read-scoped key is **replaced, not widened**.
+
+Two things a scope is not:
+
+- **Not safe to leak.** A read-scoped key still reads everything you can read.
+- **Not a fence around your apps.** A scope bounds Launchpad's own API. It says
+  nothing about what a deployed app does with a request — a read-scoped key can
+  `POST` through the apps gateway to an app that accepts one.
+
 ## Expiry
 
 `expires_at` is what the install said when it minted the key. **Absent means

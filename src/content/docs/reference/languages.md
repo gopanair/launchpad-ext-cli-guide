@@ -57,16 +57,22 @@ lp.scratch_dir("uploads"); lp.session_scratch_dir(sid)
 ## R
 
 ```r
-app_info()
+app_info(); app_base_path()
 app_data_get(); app_data_set(list(period = p))
 notify("done")
 job_start("reconcile"); job_status(id)
 viewer(); caller_role(); caller_can("editor"); verify_role()
+mounts(); storage("reports"); store("drop", "backup")
 scratch_dir("uploads")
 ```
 
 Flat function names rather than an object. A **narrower surface** than the other
 three — check before designing around a call you saw in the Go docs.
+
+`mounts()`, `storage()` and `store()` are there, so an R app asks where a
+resource is mounted rather than parsing the environment variable by hand.
+`scratch_dir()` is scratch space and is **not** where storage lives; they are
+two different questions with two different answers.
 
 ## What is identical everywhere
 
@@ -79,6 +85,15 @@ three — check before designing around a call you saw in the Go docs.
   person.
 - **Off-platform, every call fails naming the missing environment variable.**
   No dry-run mode, in any language.
+- **Where the app is mounted**: `lp.app.base_path`, `basePath()`, `BasePath`,
+  `app_base_path()`, all falling back to `BASE_PATH`.
+- **Addressing one of two mounts by folder**: `folder=` in Python, `{ folder }`
+  in Node, `StorageIn`/`StoreIn` in Go, a second argument in R.
+
+Two guards keep this list honest rather than aspirational: every
+`/api/v1/app/*` path an SDK calls has to be a route the platform serves — in R
+the method too — and every key an SDK reads out of the app's own description has
+to be a key the platform sends.
 
 ## Choosing
 

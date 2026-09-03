@@ -23,6 +23,16 @@ lp.data.get(); lp.data.set({"period": p}); lp.data.update(bump)
 app_data_get(); app_data_set(list(period = p))
 ```
 
+## A write hands back what it wrote
+
+`set` and `update` return the **document**, not an empty handle — so you do not
+have to read it back to find out what was saved, and the version you now hold is
+the one you just wrote.
+
+```python
+saved = lp.data.set({"period": p}).data
+```
+
 ## The bytes are yours
 
 Stored as text and **never read** by the platform. There is no schema, no

@@ -75,6 +75,16 @@ credential the install rejected is <code dir="auto">3</code>. Retrying <code dir
 retry it. A refusal is an answer; do not.</p>
 <p><strong>2 is yours.</strong> Usage or configuration — a missing <code dir="auto">[app]</code> table, a token
 without its URL, a flag combination that is refused. It will not fix itself.</p>
+<p>Three things land on <code dir="auto">2</code> that a caller might expect on <code dir="auto">1</code> or <code dir="auto">3</code>, all for the
+same reason — nothing was attempted, so nothing ran and failed:</p>
+<ul>
+<li><strong>A locked app.</strong> <code dir="auto">lp deploy</code> against one is <code dir="auto">2</code>, and the refusal names who
+locked it: an administrator, or the dependency sweep.</li>
+<li><strong>A name that does not resolve.</strong> <code dir="auto">lp job run &lt;unknown&gt;</code>,
+<code dir="auto">lp task run &lt;unknown&gt;</code>, <code dir="auto">lp link</code> in a directory already linked.</li>
+<li><strong>A path matching no route.</strong> <code dir="auto">lp api GET nosuchroute</code> is <code dir="auto">2</code> naming the path,
+with <code dir="auto">code: route_not_found</code> — a typo, not a credential problem.</li>
+</ul>
 <div class="sl-heading-wrapper level-h2"><h2 id="a-runs-outcome-is-the-exit-code">A run’s outcome is the exit code</h2><a class="sl-anchor-link" href="#a-runs-outcome-is-the-exit-code"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “A run’s outcome is the exit code”</span></a></div>
 <p><code dir="auto">lp job run</code> and <code dir="auto">lp task run</code> <strong>wait by default</strong>, and the run’s outcome
 becomes the process’s exit code.</p>
@@ -83,6 +93,9 @@ becomes the process’s exit code.</p>
 any output.</p>
 <p><strong><code dir="auto">skipped</code> is exit 1 for a task.</strong> A firing that did not happen is not a
 success, and collapsing it into 0 would make a broken schedule invisible.</p>
+<p><strong>The exit code is the run’s in every rendering, <code dir="auto">--json</code> included.</strong> The
+document prints on stdout <em>and</em> the process exits non-zero. A caller reading the
+document does not have to also decide what it means.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="--wait-on-a-restart"><code dir="auto">--wait</code> on a restart</h2><a class="sl-anchor-link" href="#--wait-on-a-restart"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “--wait on a restart”</span></a></div>
 <p><code dir="auto">lp restart --wait</code> polls until the status settles.</p>
 <ul>

@@ -48,6 +48,28 @@ npm install ./.launchpad/sdk-node
 
 **R** lands the package directory for `renv` to pick up.
 
+## Which copy is this
+
+`lp sdk vendor` prints a **build id** for the copy it just wrote — twelve hex
+characters derived from the SDK's own bytes, not a version somebody declared and
+might forget to change.
+
+```
+Wrote the python SDK (launchpad 0.3.0) to .launchpad/sdk-python — 14 files
+  Build 9ed4b6bdfa26 — the deploy log names the copy your app was built with;
+  they should match.
+```
+
+`GET /api/v1/sdk/{lang}` reports the same field, and **both build logs print
+it**. That is what makes the comparison possible at all: on an isolated install
+the copy you vendored comes from the platform and the copy your app is built
+with comes from the runner image, and a version number cannot tell those apart —
+which is exactly how a fix ships, gets vendored, and is not in the deployed app.
+
+**A runner image whose SDK is not the platform's says so in the build log, and
+the deploy still succeeds.** The warning names both copies. It is your
+administrator's cue to rebuild the image, not a reason to stop your deploy.
+
 ## Committing it
 
 Commit `.launchpad/` if you want reproducible builds without a vendor step in
