@@ -96,3 +96,9 @@ own — a shared secret from an environment variable is the usual approach.
 A scheduled task has a **tighter ceiling and a smaller memory envelope than a
 job**. If the work is minutes and gigabytes, have the handler start a
 [job](../jobs/) and return.
+
+## A task that is switched off
+
+It does not fire, **Run now** refuses it, and your app's own trigger for it is
+refused with 409 `schedule_disabled`. Off means off from every direction; a
+handler will not be reached by a task nobody armed.

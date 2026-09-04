@@ -50,6 +50,13 @@ err := lp.Store("reports").Put(path, name)  // a file into an object store
 lp.storage("reports").path;
 await lp.store("reports").put(file);
 ```
+```r
+storage("reports")$path
+store_put(store("reports"), path, name)   # a file into an object store
+```
+
+**In R, `store_put()` is the write.** `file.copy()` onto a store mount produces a
+zero-byte object: a store has no append, and a copy is not one write.
 
 Resolved **by name**, not by path. Your app says `"reports"` and the platform
 resolves it to whatever the administrator mapped — so the same code works in

@@ -83,8 +83,18 @@ Retries are **opt-in, unattended-only, and never silent**.
 ## Refusals
 
 - An app can only start **its own** jobs.
+- **A viewer who started a run sees that run and no other.** A run somebody
+  else started is `404` to them, because its existence is theirs.
+- **A document app can still run jobs**, and that surprises people. A rendered
+  `.Rmd`, `.qmd` or `.ipynb` has no process behind the page, but a job is a
+  separate container running a command from the same release, and a document's
+  release carries its venv or R library like any other. So `[jobs]` works, and
+  inside the job the SDK is fully present — `run` populated, `mounts()`
+  answering, storage writable. It is the one way a document app does anything
+  after its build. What it still cannot do is see a request.
 - **A static app cannot have jobs at all** — a `launchpad.toml` declaring one
-  fails the deploy. There is no runtime for a command to mean anything in.
+  fails the deploy with `manifest_invalid`, before anything is built. There is
+  no runtime for a command to mean anything in.
 - A full queue is its own error, not a generic failure.
 - Jobs unavailable on this install is the install's refusal, verbatim.
 

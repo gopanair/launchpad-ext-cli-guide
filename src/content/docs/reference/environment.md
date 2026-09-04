@@ -14,6 +14,10 @@ Bind `127.0.0.1` in shared mode. The proxy strips the prefix before forwarding,
 so your server is mounted at the root — but the *browser* still needs the
 prefix.
 
+A `Location` you send that is an absolute path is given the prefix on the way
+out; a relative one — `new/`, `?page=2`, `.` — is passed through untouched, and
+a cookie `Path` already under the prefix is left alone.
+
 ## What the SDK reads
 
 | | |

@@ -175,7 +175,7 @@
 </tr>
 <tr>
 <td><code dir="auto">lp task list|create|edit|delete|run|runs|logs</code></td>
-<td>A task is an HTTP request to a path the app published, in the app’s own process. <code dir="auto">create</code> needs <code dir="auto">--path</code> and takes <code dir="auto">--schedule</code> <strong>optionally</strong>; <code dir="auto">edit</code> sends only the flags you name; <code dir="auto">delete</code> confirms and takes the run history with it. <code dir="auto">run</code> waits by default, and <strong><code dir="auto">skipped</code> is exit 1</strong> — a firing that did not happen is not a success. Takes no parameters: a task’s belong to its schedule.</td>
+<td>A task is an HTTP request to a path the app published, in the app’s own process. <code dir="auto">create</code> needs <code dir="auto">--path</code> and takes <code dir="auto">--schedule</code> <strong>optionally</strong>; <code dir="auto">edit</code> sends only the flags you name; <code dir="auto">delete</code> confirms and takes the run history with it. <code dir="auto">run</code> waits by default, and <strong><code dir="auto">skipped</code> is exit 1</strong> — a firing that did not happen is not a success. <code dir="auto">run</code> on a task that is switched off is refused with <code dir="auto">schedule_disabled</code>: a disabled task does not run from anywhere. Takes no parameters: a task’s belong to its schedule.</td>
 </tr>
 <tr>
 <td><code dir="auto">lp deps</code></td>

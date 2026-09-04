@@ -103,8 +103,18 @@ for work the platform was in the middle of redoing.</p>
 <div class="sl-heading-wrapper level-h2"><h2 id="refusals">Refusals</h2><a class="sl-anchor-link" href="#refusals"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Refusals”</span></a></div>
 <ul>
 <li>An app can only start <strong>its own</strong> jobs.</li>
+<li><strong>A viewer who started a run sees that run and no other.</strong> A run somebody
+else started is <code dir="auto">404</code> to them, because its existence is theirs.</li>
+<li><strong>A document app can still run jobs</strong>, and that surprises people. A rendered
+<code dir="auto">.Rmd</code>, <code dir="auto">.qmd</code> or <code dir="auto">.ipynb</code> has no process behind the page, but a job is a
+separate container running a command from the same release, and a document’s
+release carries its venv or R library like any other. So <code dir="auto">[jobs]</code> works, and
+inside the job the SDK is fully present — <code dir="auto">run</code> populated, <code dir="auto">mounts()</code>
+answering, storage writable. It is the one way a document app does anything
+after its build. What it still cannot do is see a request.</li>
 <li><strong>A static app cannot have jobs at all</strong> — a <code dir="auto">launchpad.toml</code> declaring one
-fails the deploy. There is no runtime for a command to mean anything in.</li>
+fails the deploy with <code dir="auto">manifest_invalid</code>, before anything is built. There is
+no runtime for a command to mean anything in.</li>
 <li>A full queue is its own error, not a generic failure.</li>
 <li>Jobs unavailable on this install is the install’s refusal, verbatim.</li>
 </ul>

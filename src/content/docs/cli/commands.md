@@ -43,7 +43,7 @@ Run `lp <command> --help` for a command's own flags. Every command accepts
 | | |
 |---|---|
 | `lp job list\|run\|runs\|logs\|cancel` | A job runs in its own container with its own memory limit, and every listing says so. `run` **waits by default** and the run's outcome is the exit code. `--no-wait`, `--logs`. A failed run prints its tail unasked. `--param k=v` repeats, splits on the **first** `=` only, and is never parsed. |
-| `lp task list\|create\|edit\|delete\|run\|runs\|logs` | A task is an HTTP request to a path the app published, in the app's own process. `create` needs `--path` and takes `--schedule` **optionally**; `edit` sends only the flags you name; `delete` confirms and takes the run history with it. `run` waits by default, and **`skipped` is exit 1** — a firing that did not happen is not a success. Takes no parameters: a task's belong to its schedule. |
+| `lp task list\|create\|edit\|delete\|run\|runs\|logs` | A task is an HTTP request to a path the app published, in the app's own process. `create` needs `--path` and takes `--schedule` **optionally**; `edit` sends only the flags you name; `delete` confirms and takes the run history with it. `run` waits by default, and **`skipped` is exit 1** — a firing that did not happen is not a success. `run` on a task that is switched off is refused with `schedule_disabled`: a disabled task does not run from anywhere. Takes no parameters: a task's belong to its schedule. |
 | `lp deps` | The packages a release installed, the advisories against them, and the versions that would fix a refused deploy. This is the command a refusal points at. `--json` is the install's own answer, unaltered. |
 
 ## Files and code
