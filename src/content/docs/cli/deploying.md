@@ -81,6 +81,33 @@ tasks are not declared in the manifest.
 **A locked app is exit 2**, and the refusal names whether an administrator or the
 dependency sweep locked it.
 
+**A pnpm or Yarn lockfile is passed over, not refused.** The install reads
+`package-lock.json` only. An app locking with `pnpm-lock.yaml` or `yarn.lock`
+deploys, resolves its versions fresh, and the build log names the lockfile it
+did not read — so the versions installed can differ from the ones you pinned.
+
+## A program with no web server
+
+```toml
+# launchpad.toml
+[batch]
+language = "python"   # only when the tree has more than one language's project file
+
+[jobs.nightly-extract]
+command  = "python extract.py"
+schedule = "0 3 * * *"
+```
+
+An empty `[batch]` table makes the app a **batch app**: the deploy installs its
+dependencies — Node, Python, Go or R — starts nothing, and the app's work is its
+jobs. It is never guessed from the tree, because a batch program and a web app
+look the same from outside.
+
+The deploy ends by saying *batch app — runs jobs, serves no pages* where it
+would print the address, and the app settles as `ready` rather than `running`.
+There is nothing to open, restart or stop; see [Jobs](../../sdk/jobs/).
+`[batch]` beside `[static]` is refused.
+
 ## Creating rather than updating
 
 ```bash
@@ -103,3 +130,17 @@ prints the repository and branch first — on an app that has been `lp deploy`ed
 to, that is the surprise it exists to make visible.
 
 An app created from an upload is refused here, naming `lp deploy`.
+
+## Publishing from RStudio instead
+
+R developers can keep the **Publish** button. In RStudio, add an account of the
+*Posit Connect* kind and give it the install's address. The sign-in goes
+through the same approval page as `lp login`, and what it creates is an
+ordinary personal key named *RStudio (rsconnect)*, listed with your other keys
+and revoked the same way. `rsconnect::deployApp()` then creates the app,
+uploads and deploys it, and shows the build log.
+
+What Connect has and Launchpad does not — content settings, access lists,
+vanity URLs, schedules — is not imitated. A name already taken is refused rather
+than given a suffix, because rsconnect finds its content again by name. For
+anything scripted, use `lp`.

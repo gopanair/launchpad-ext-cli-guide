@@ -60,7 +60,7 @@ lp.scratch_dir("uploads"); lp.session_scratch_dir(sid)
 app_info(); app_base_path()
 app_data_get(); app_data_set(list(period = p))
 notify("done")
-job_start("reconcile"); job_status(id)
+job_start("reconcile"); job_status(id); scheduled_for()
 viewer(); caller_role(); caller_can("editor"); verify_role()
 mounts(); storage("reports"); store("drop", "backup")
 scratch_dir("uploads")
@@ -82,7 +82,9 @@ two different questions with two different answers.
   `update` for a second writer.
 - [Notifications](../../sdk/notify/): a send returns a record, never a delivery.
 - [Jobs](../../sdk/jobs/): two objects — the app, and the app acting for a
-  person.
+  person. Inside a job, the instant the run is for — `run.scheduled_for`,
+  `run.scheduledFor`, `run.ScheduledFor()`, `scheduled_for()` — and sending
+  notifications works the same way it does from the app.
 - **Off-platform, every call fails naming the missing environment variable.**
   No dry-run mode, in any language.
 - **Where the app is mounted**: `lp.app.base_path`, `basePath()`, `BasePath`,

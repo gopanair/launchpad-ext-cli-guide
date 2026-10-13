@@ -27,7 +27,7 @@ The matrix is Linux, macOS and Windows on amd64 and arm64 —
 
 ```bash
 lp --version
-lp 0.6.3 (build 4f2a1c9e)
+lp 0.6.4 (build 4f2a1c9e)
 ```
 
 **The build id is there so two builds of one tag are tellable apart.** A tag is

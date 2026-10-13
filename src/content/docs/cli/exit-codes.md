@@ -57,8 +57,13 @@ document does not have to also decide what it means.
 
 `lp restart --wait` polls until the status settles.
 
-- `running`, `sleeping` → 0
+- `running`, `sleeping`, `ready` → 0
 - `crashed`, `failed` → 1
+
+`ready` is a batch app's settled state: live, and serving nothing because it
+has no service. You will rarely see it here, since a restart of a batch app is
+refused with `no_service` — exit 1, because the install understood the request
+and the app's shape is what refuses it.
 
 **Without `--wait`, exit 0 means the platform accepted the request** — which is
 all a `202` asserts. It does not mean the app came up.

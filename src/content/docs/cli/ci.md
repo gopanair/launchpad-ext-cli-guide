@@ -46,6 +46,21 @@ lp job run migrate --app my-app --yes  # 1 if the migration fails
 Three real gates, no output parsing. Add `--json` if you want to record
 anything.
 
+A **batch app** — one that only runs jobs — has no service to restart, so drop
+the middle line; `lp restart` there is refused with `no_service`.
+
+## Re-running a day that went wrong
+
+```bash
+lp job run nightly-extract --app my-app --for 2026-10-06T03:00:00+01:00
+```
+
+`--for` names the instant the run is for, and the job reads it back through the
+SDK. A scheduled run already carries its own — the tick it fired for, even if it
+started late — so this is for backfills and re-runs. A date or date-time with no
+offset is read as UTC, deliberately: a time that meant this machine's zone would
+name a different instant on the next runner.
+
 ## What `--json` gives a program
 
 `--json` is on **every** command — a test walks the dispatch table, so a command

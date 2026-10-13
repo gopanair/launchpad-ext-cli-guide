@@ -65,6 +65,17 @@ time you send is refused rather than sent anyway.
 resolves in one place, and a broken destination is an error you can see rather
 than a message that quietly went somewhere else.
 
+## From a job
+
+The same calls work inside a [job](../jobs/), in all four languages. A job holds
+no app token, so the SDK sends with the run's own credential, which the platform
+accepts for sending through the app's integrations **and nothing else** — the
+same gates, the same record, the same integrations an administrator attached to
+the app. That is how a batch app with no web server mails its nightly report.
+
+Send before the job's command exits: once the run has finished, its credential
+is refused.
+
 ## Nothing here reads
 
 Integrations are outbound only. You cannot use one to read a channel, list

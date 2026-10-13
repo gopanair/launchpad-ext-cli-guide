@@ -24,7 +24,7 @@ a cookie `Path` already under the prefix is left alone.
 |---|---|
 | `LAUNCHPAD_API_URL` | Where to call the platform back. |
 | `LAUNCHPAD_APP_ID`, `LAUNCHPAD_APP_SLUG` | This app's identity. |
-| `LAUNCHPAD_APP_TOKEN` | The app's own credential. |
+| `LAUNCHPAD_APP_TOKEN` | The app's own credential. Not set inside a job. |
 | `LAUNCHPAD_ROLE_KEY` | Verifies the signed role, locally. |
 | `LAUNCHPAD_SCRATCH_DIR` | Where `scratch_dir` lives. |
 | `LAUNCHPAD_STORAGE` | Resolves `storage("name")`. |
@@ -33,9 +33,10 @@ a cookie `Path` already under the prefix is left alone.
 
 | | |
 |---|---|
-| `LAUNCHPAD_RUN_ID` | This run. |
-| `LAUNCHPAD_JOB_TOKEN` | The run's credential — **exchanged, never extended**. |
-| `LAUNCHPAD_PARAMS` | The parameters, as values. |
+| `LAUNCHPAD_RUN_ID`, `LAUNCHPAD_JOB_NAME` | This run, and the job it is a run of. |
+| `LAUNCHPAD_JOB_TOKEN` | The run's credential — **exchanged, never extended**. It is also what the SDK sends notifications with, and it opens nothing else. |
+| `LAUNCHPAD_PARAMS` | The parameters, as JSON values. Each one is also `LAUNCHPAD_PARAM_<NAME>`, so a shell job need not parse JSON. |
+| `LAUNCHPAD_SCHEDULED_FOR` | The instant this run is for, RFC 3339 in the schedule's zone. **Absent** when nobody gave one — never set to now. |
 | `LAUNCHPAD_TRIGGER`, `LAUNCHPAD_TRIGGER_ROLE` | What started it, and as whom. |
 | `LAUNCHPAD_INPUT_URI`, `LAUNCHPAD_OUTPUT_URI` | Where the run reads and writes. |
 

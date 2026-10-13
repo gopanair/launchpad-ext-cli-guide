@@ -42,10 +42,12 @@ platform names the environment variable that is missing. There is deliberately
 would be a trap that only springs in production. Develop against a real install.
 
 **Background work is a different entrypoint of this same app.** `jobs.start`
-runs a command `launchpad.toml` declares, from the same release, as an isolated
-workload with a memory limit and a deadline — in *both* execution modes, because
-moving twelve minutes and six gigabytes out of the app's own process is the
-point rather than a side effect.
+runs a command `launchpad.toml` declares, from the same release, as a process
+of its own with a memory limit and a deadline — in a container where the install
+has a cluster, on the install's own machine where it does not, and whatever mode
+your app runs in, because moving twelve minutes and six gigabytes out of the
+app's own process is the point rather than a side effect. An app can even be
+nothing *but* jobs: a batch app, with no web server at all.
 
 ## Two objects, and choosing between them is the decision
 

@@ -46,6 +46,17 @@ trigger all still do.
 Your handler cannot tell the difference and does not need to — a firing is a
 firing. What changes is only whether anything fires it unasked.
 
+## A schedule may name a time zone
+
+A schedule is read in UTC unless it names a zone — `lp task create --timezone
+Europe/London`, or the Time zone field in the app's page. A zoned schedule
+follows the wall clock: `0 6 * * *` in London fires at 06:00 London time all
+year, once per scheduled time, through both daylight saving changes. Lists show
+the zone beside the expression.
+
+Your handler is not told the zone, any more than the expression: the schedule is
+the platform's business.
+
 ## The run's own log
 
 ```js
@@ -102,3 +113,9 @@ job**. If the work is minutes and gigabytes, have the handler start a
 It does not fire, **Run now** refuses it, and your app's own trigger for it is
 refused with 409 `schedule_disabled`. Off means off from every direction; a
 handler will not be reached by a task nobody armed.
+
+## A batch app has none
+
+A [batch app](../../cli/deploying/) serves no path, so there is nothing for a
+task to call: creating one is refused with `no_service`. Its scheduled work is a
+job with a `schedule`.

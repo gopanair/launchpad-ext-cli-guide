@@ -54,7 +54,7 @@ export default defineConfig({
             { label: "Installing lp", slug: "cli/installing" },
             { label: "Signing in", slug: "cli/signing-in" },
             { label: "Deploying", slug: "cli/deploying" },
-            { label: "The sixteen commands", slug: "cli/commands" },
+            { label: "The eighteen commands", slug: "cli/commands" },
             { label: "Exit codes", slug: "cli/exit-codes" },
             { label: "CI and automation", slug: "cli/ci" },
           ],

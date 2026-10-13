@@ -26,7 +26,7 @@ Run `lp <command> --help` for a command's own flags. Every command accepts
 
 | | |
 |---|---|
-| `lp status` | What is serving, since when, from what — plus the divergence sentence for as long as it is true. |
+| `lp status` | What is serving, since when, from what — plus the divergence sentence for as long as it is true. A batch app shows *batch app — runs jobs, serves no pages* where the address would be. |
 | `lp logs` | The runtime log. `--follow`, `--deploy <id>` for a build log, `--source app\|platform`, `--since`. `--source` and `--since` are **refused with `--deploy`**: a build log has no app half to separate from. |
 | `lp events` | What has gone **wrong** with this app, newest first — a different question from the log. `--since`, `--severity`, `--kind`, `--limit`. |
 | `lp apps` | The estate you can read. `--mine`. |
@@ -35,15 +35,19 @@ Run `lp <command> --help` for a command's own flags. Every command accepts
 
 | | |
 |---|---|
-| `lp restart` / `lp start` | One route serves both; the platform picks the audit action from the prior status. `--wait` polls until it settles — `running` and `sleeping` are exit 0, `crashed` and `failed` are 1. Without `--wait`, exit 0 only means the platform accepted it. |
+| `lp restart` / `lp start` | One route serves both; the platform picks the audit action from the prior status. `--wait` polls until it settles — `running`, `sleeping` and `ready` are exit 0, `crashed` and `failed` are 1. `--wait-timeout` bounds it (default two minutes). Without `--wait`, exit 0 only means the platform accepted it. |
 | `lp stop` | Stops it. |
+
+A **batch app** has no service, so `restart`, `start` and `stop` are refused
+with `no_service` (exit 1). To keep one from running, switch its jobs off or ask
+an administrator to lock it.
 
 ## Work
 
 | | |
 |---|---|
-| `lp job list\|run\|runs\|logs\|cancel` | A job runs in its own container with its own memory limit, and every listing says so. `run` **waits by default** and the run's outcome is the exit code. `--no-wait`, `--logs`. A failed run prints its tail unasked. `--param k=v` repeats, splits on the **first** `=` only, and is never parsed. |
-| `lp task list\|create\|edit\|delete\|run\|runs\|logs` | A task is an HTTP request to a path the app published, in the app's own process. `create` needs `--path` and takes `--schedule` **optionally**; `edit` sends only the flags you name; `delete` confirms and takes the run history with it. `run` waits by default, and **`skipped` is exit 1** — a firing that did not happen is not a success. `run` on a task that is switched off is refused with `schedule_disabled`: a disabled task does not run from anywhere. Takes no parameters: a task's belong to its schedule. |
+| `lp job list\|run\|runs\|logs\|cancel` | A job runs as a process of its own with its own memory limit — in a container where the install has a cluster, on the install's own machine where it does not — and every listing says so. `list` prints each job's schedule with its time zone, or *on demand*, and its alert window if it declares one. `run` **waits by default** and the run's outcome is the exit code. `--no-wait`, `--logs`, `--timeout`. A failed run prints its tail unasked. `--param k=v` repeats, splits on the **first** `=` only, and is never parsed. `--for <time>` names the instant the run is for — `2026-10-06T03:00:00+01:00`, or a date or date-time with no offset, read as **UTC** — which is how you re-run Tuesday's work on Thursday. `runs` shows the instant each run was for, and marks one that ran on the install's own machine. |
+| `lp task list\|create\|edit\|delete\|run\|runs\|logs` | A task is an HTTP request to a path the app published, in the app's own process. `create` needs `--path` and takes `--schedule` **optionally**, read in UTC unless `--timezone Europe/London` names a zone — a zoned schedule fires once per wall-clock time through daylight saving changes. `--timezone` only travels with `--schedule`: an edit that names `--schedule` alone puts the schedule back on UTC, so repeat the zone. A batch app cannot have tasks — it serves no path to call — and `create` there is refused with `no_service`; `edit` sends only the flags you name; `delete` confirms and takes the run history with it. `run` waits by default, and **`skipped` is exit 1** — a firing that did not happen is not a success. `run` on a task that is switched off is refused with `schedule_disabled`: a disabled task does not run from anywhere. Takes no parameters: a task's belong to its schedule. |
 | `lp deps` | The packages a release installed, the advisories against them, and the versions that would fix a refused deploy. This is the command a refusal points at. `--json` is the install's own answer, unaltered. |
 
 ## Files and code
