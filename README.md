@@ -1,3 +1,5 @@
+> **Moved.** This guide is now part of [toft-docs](https://github.com/larchway-labs/toft-docs), one site with the user, admin and CLI & SDK guides, published per Toft version at https://larchway-labs.github.io/toft-docs/. This repository is archived; its tags keep working for installs that already took them.
+
 # Toft CLI and SDK guide
 
 The reference for `toft`, the command-line client, and the app SDK your code calls the platform back with (Go, Node, Python and R). It deploys onto a
