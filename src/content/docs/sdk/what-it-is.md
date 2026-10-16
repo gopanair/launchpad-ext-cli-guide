@@ -10,20 +10,20 @@ page.
 Four languages — **Go, Node, Python and R** — with one model behind all of them.
 
 ```go
-import lp "launchpad/lp"
+import "toft"
 ```
 ```js
-import lp from "@launchpad/sdk";
+import toft from "@larchway/toft";
 ```
 ```python
-import launchpad as lp
+import toft
 ```
 
 ## Five rules that hold everywhere
 
 **The credential stays with the platform.** Your app never holds the Slack bot
 token or the relay password, never names the channel it posts to, and never
-chooses the address its mail comes from. The app supplies the message; Launchpad
+chooses the address its mail comes from. The app supplies the message; Toft
 supplies the identity. An administrator attaching an integration is a row they
 add, and detaching it is a row they delete — not a token to rotate across every
 app.
@@ -42,7 +42,7 @@ platform names the environment variable that is missing. There is deliberately
 would be a trap that only springs in production. Develop against a real install.
 
 **Background work is a different entrypoint of this same app.** `jobs.start`
-runs a command `launchpad.toml` declares, from the same release, as a process
+runs a command `toft.toml` declares, from the same release, as a process
 of its own with a memory limit and a deadline — in a container where the install
 has a cluster, on the install's own machine where it does not, and whatever mode
 your app runs in, because moving twelve minutes and six gigabytes out of the
@@ -51,8 +51,8 @@ nothing *but* jobs: a batch app, with no web server at all.
 
 ## Two objects, and choosing between them is the decision
 
-`lp.jobs` is **the app acting as itself**.
-`lp.viewer(headers).jobs` is **the app acting for the person looking at the
+`toft.jobs` is **the app acting as itself**.
+`toft.viewer(headers).jobs` is **the app acting for the person looking at the
 page**.
 
 That is two objects rather than a flag on one, because a flag would make the

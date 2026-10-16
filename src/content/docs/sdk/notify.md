@@ -4,16 +4,16 @@ description: Sending as the app, and what a send actually promises.
 ---
 
 ```go
-lp.Notify.Slack(ctx, "Ingest finished: 1,204 rows")
-lp.Notify.SlackFile(ctx, f, lp.SlackFileOptions{Title: "Weekly reconciliation"})
-lp.Notify.Email(ctx, lp.EmailMessage{To: to, Subject: subject, Text: body})
+toft.Notify.Slack(ctx, "Ingest finished: 1,204 rows")
+toft.Notify.SlackFile(ctx, f, toft.SlackFileOptions{Title: "Weekly reconciliation"})
+toft.Notify.Email(ctx, toft.EmailMessage{To: to, Subject: subject, Text: body})
 ```
 ```js
-await lp.notify.slack("Ingest finished: 1,204 rows");
-await lp.notify.email({ to, subject, text });
+await toft.notify.slack("Ingest finished: 1,204 rows");
+await toft.notify.email({ to, subject, text });
 ```
 ```python
-lp.notify.slack("Ingest finished: 1,204 rows")
+toft.notify.slack("Ingest finished: 1,204 rows")
 ```
 ```r
 notify("Ingest finished: 1,204 rows")
@@ -36,8 +36,8 @@ So the returned `Send` names a **record**, and that record â€” not the message â
 is what a workflow may rely on:
 
 ```js
-const send = await lp.notify.slack("done");
-const status = await lp.notify.status(send.id);
+const send = await toft.notify.slack("done");
+const status = await toft.notify.status(send.id);
 ```
 
 **No status is ever a lie.** If it says it sent, it sent.
@@ -45,7 +45,7 @@ const status = await lp.notify.status(send.id);
 ## Ask first
 
 ```js
-if (!(await lp.app.can("slack"))) {
+if (!(await toft.app.can("slack"))) {
   return renderSetupHint();
 }
 ```

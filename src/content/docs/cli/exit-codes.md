@@ -27,20 +27,20 @@ without its URL, a flag combination that is refused. It will not fix itself.
 Three things land on `2` that a caller might expect on `1` or `3`, all for the
 same reason — nothing was attempted, so nothing ran and failed:
 
-- **A locked app.** `lp deploy` against one is `2`, and the refusal names who
+- **A locked app.** `toft deploy` against one is `2`, and the refusal names who
   locked it: an administrator, or the dependency sweep.
-- **A name that does not resolve.** `lp job run <unknown>`,
-  `lp task run <unknown>`, `lp link` in a directory already linked.
-- **A path matching no route.** `lp api GET nosuchroute` is `2` naming the path,
+- **A name that does not resolve.** `toft job run <unknown>`,
+  `toft task run <unknown>`, `toft link` in a directory already linked.
+- **A path matching no route.** `toft api GET nosuchroute` is `2` naming the path,
   with `code: route_not_found` — a typo, not a credential problem.
 
 ## A run's outcome is the exit code
 
-`lp job run` and `lp task run` **wait by default**, and the run's outcome
+`toft job run` and `toft task run` **wait by default**, and the run's outcome
 becomes the process's exit code.
 
 ```bash
-lp job run nightly-report --param region=emea   # non-zero if the job failed
+toft job run nightly-report --param region=emea   # non-zero if the job failed
 ```
 
 That is the point: a failing nightly job fails your pipeline without you parsing
@@ -55,7 +55,7 @@ document does not have to also decide what it means.
 
 ## `--wait` on a restart
 
-`lp restart --wait` polls until the status settles.
+`toft restart --wait` polls until the status settles.
 
 - `running`, `sleeping`, `ready` → 0
 - `crashed`, `failed` → 1
@@ -70,5 +70,5 @@ all a `202` asserts. It does not mean the app came up.
 
 ## Nothing client-side decides expiry
 
-`lp` never decides your credential has expired. The install answers `401
+`toft` never decides your credential has expired. The install answers `401
 key_expired`, and that is exit 3.

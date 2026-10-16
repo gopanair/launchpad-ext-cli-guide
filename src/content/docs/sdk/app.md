@@ -6,13 +6,13 @@ description: Identity, and asking what an administrator attached.
 ## Who am I
 
 ```go
-self, err := lp.App.Self(ctx)     // id, slug, mode
+self, err := toft.App.Self(ctx)     // id, slug, mode
 ```
 ```js
-await lp.app.slug();
+await toft.app.slug();
 ```
 ```python
-lp.app.slug()
+toft.app.slug()
 ```
 ```r
 app_info()
@@ -24,13 +24,13 @@ rather than the process.
 ## Where am I mounted
 
 ```python
-lp.app.base_path()
+toft.app.base_path()
 ```
 ```js
-lp.app.basePath();
+toft.app.basePath();
 ```
 ```go
-lp.App.BasePath()
+toft.App.BasePath()
 ```
 ```r
 app_base_path()
@@ -52,13 +52,13 @@ read it and be right immediately.
 ## What did an administrator attach
 
 ```go
-ok, err := lp.App.Can(ctx, "email")
+ok, err := toft.App.Can(ctx, "email")
 ```
 ```js
-if (await lp.app.can("email")) { … }
+if (await toft.app.can("email")) { … }
 ```
 ```python
-if lp.app.can("email"): ...
+if toft.app.can("email"): ...
 ```
 ```r
 caller_can("email")

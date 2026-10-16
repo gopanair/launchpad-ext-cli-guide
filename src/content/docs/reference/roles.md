@@ -3,18 +3,18 @@ title: The six roles
 description: The words on the wire, what each means, and how the signature works.
 ---
 
-Every request Launchpad forwards carries a role: **what the caller may do**, not
+Every request Toft forwards carries a role: **what the caller may do**, not
 who they are.
 
 ## Seven constants. Six arrive on the wire.
 
 | Word | Who |
 |---|---|
-| `anonymous` | A visitor not signed in to Launchpad. Only a public app sees it. |
+| `anonymous` | A visitor not signed in to Toft. Only a public app sees it. |
 | `viewer` | May look. |
 | `editor` | May change. |
 | `owner` | Owns this deployment. |
-| `system` | Launchpad acting on its own — a scheduled task firing on its schedule. |
+| `system` | Toft acting on its own — a scheduled task firing on its schedule. |
 | `app` | An app credential: an app key at the gateway, or an app-started job's callback. |
 | `unknown` | **Never arrives.** Every failure resolves here. |
 
@@ -29,7 +29,7 @@ request as proof that nobody is there.
 
 ## An administrator reads as `viewer`
 
-A Launchpad administrator with no grant on your app reads as `viewer`. **The
+A Toft administrator with no grant on your app reads as `viewer`. **The
 header carries no admin bit.**
 
 That is deliberate: an app asking "is this person an administrator" is asking
@@ -38,7 +38,7 @@ about a *person*, which is what [`who`](../../sdk/viewer/) is for.
 ## How it is signed
 
 Per app, per start, **derived and never stored**. Your app verifies it against
-`LAUNCHPAD_ROLE_KEY` with no round trip.
+`TOFT_ROLE_KEY` with no round trip.
 
 It is signed rather than stripped because stripping answers the visitor and not
 the neighbour on loopback — in shared mode, another process on the box can reach
@@ -51,7 +51,7 @@ verifier comes to answer confidently about the wrong thing.
 ## Comparing
 
 ```js
-if (!c.atLeast(lp.ROLE_EDITOR)) return res.status(403).end();
+if (!c.atLeast(toft.ROLE_EDITOR)) return res.status(403).end();
 ```
 
 `atLeast` walks `viewer < editor < owner`. `anonymous`, `system`, `app` and

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Launchpad documentation theme — Starlight wearing the platform's own skin.
+   Toft documentation theme — Starlight wearing the platform's own skin.
 
    All three guides carry a byte-identical copy of this file, for the reason
    the example kit does: a reader moving between the user guide, the admin
@@ -14,7 +14,7 @@
    page. That is Starlight's convention, not a mistake.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Launchpad is light-only, so every selector Starlight might switch on gets
+/* Toft is light-only, so every selector Starlight might switch on gets
    the same values. The theme toggle is removed in astro.config.mjs by
    overriding the component; this is the belt to that pair of braces, and it is
    what keeps a reader whose OS is dark from getting a half-dark page. */
@@ -131,7 +131,7 @@
 
   --sl-content-width: 48rem;
 
-  /* Type scale — the product's, not Starlight's. Launchpad's page heading is
+  /* Type scale — the product's, not Starlight's. Toft's page heading is
      `text-2xl` and its markdown h2 is `text-base` with a rule under it; a docs
      site gets one step more air than that and no more. The default scale is
      roughly half again as large at every level, which is what made a Starlight

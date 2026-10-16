@@ -9,31 +9,31 @@ capabilities.
 ## Go
 
 ```go
-import lp "launchpad/lp"
+import "toft"
 
-lp.App.Self(ctx)
-lp.Data.Get(ctx)
-lp.Notify.Slack(ctx, "done")
-lp.Jobs.Start(ctx, "reconcile", opts)
-me, err := lp.ViewerFor(r.Header)
-who, err := lp.Who(ctx, r.Header)
-c := lp.CallerFor(r.Header)
+toft.App.Self(ctx)
+toft.Data.Get(ctx)
+toft.Notify.Slack(ctx, "done")
+toft.Jobs.Start(ctx, "reconcile", opts)
+me, err := toft.ViewerFor(r.Header)
+who, err := toft.Who(ctx, r.Header)
+c := toft.CallerFor(r.Header)
 ```
 
-`context.Context` first, `error` last. `lp sdk vendor` writes a `go.work` with a
+`context.Context` first, `error` last. `toft sdk vendor` writes a `go.work` with a
 relative `use` — see [Vendoring it](../../sdk/vendoring/).
 
 ## Node
 
 ```js
-import lp from "@launchpad/sdk";
+import toft from "@larchway/toft";
 
-await lp.app.slug();
-await lp.data.update((s) => { s.runs++; });
-await lp.notify.email({ to, subject, text });
-const me = lp.viewer(req.headers);
-const who = await lp.who(req.headers);
-const c = lp.caller(req.headers);
+await toft.app.slug();
+await toft.data.update((s) => { s.runs++; });
+await toft.notify.email({ to, subject, text });
+const me = toft.viewer(req.headers);
+const who = await toft.who(req.headers);
+const c = toft.caller(req.headers);
 ```
 
 Promises throughout except `caller`, `task` and `run`, which are local.
@@ -41,18 +41,18 @@ Promises throughout except `caller`, `task` and `run`, which are local.
 ## Python
 
 ```python
-import launchpad as lp
+import toft
 
-lp.app.slug()
-lp.data.update(bump)
-lp.notify.slack("done")
-lp.jobs.start("reconcile", params=params)
-lp.viewer(headers); lp.who(headers); lp.caller(headers)
-lp.scratch_dir("uploads"); lp.session_scratch_dir(sid)
+toft.app.slug()
+toft.data.update(bump)
+toft.notify.slack("done")
+toft.jobs.start("reconcile", params=params)
+toft.viewer(headers); toft.who(headers); toft.caller(headers)
+toft.scratch_dir("uploads"); toft.session_scratch_dir(sid)
 ```
 
 `snake_case`. Types worth naming are exported: `Identity`, `Caller`, `Viewer`,
-`Send`, `JobRun`, `Document`, `VersionConflict`, `QueueFull`, `LaunchpadError`.
+`Send`, `JobRun`, `Document`, `VersionConflict`, `QueueFull`, `ToftError`.
 
 ## R
 
@@ -87,7 +87,7 @@ two different questions with two different answers.
   notifications works the same way it does from the app.
 - **Off-platform, every call fails naming the missing environment variable.**
   No dry-run mode, in any language.
-- **Where the app is mounted**: `lp.app.base_path`, `basePath()`, `BasePath`,
+- **Where the app is mounted**: `toft.app.base_path`, `basePath()`, `BasePath`,
   `app_base_path()`, all falling back to `BASE_PATH`.
 - **Addressing one of two mounts by folder**: `folder=` in Python, `{ folder }`
   in Node, `StorageIn`/`StoreIn` in Go, a second argument in R.

@@ -14,14 +14,14 @@ Three entry points, and choosing between them is most of getting this right.
 ## `caller` — what they may do
 
 ```js
-const c = lp.caller(req.headers);
-if (!c.atLeast(lp.ROLE_EDITOR)) return res.status(403).end();
+const c = toft.caller(req.headers);
+if (!c.atLeast(toft.ROLE_EDITOR)) return res.status(403).end();
 ```
 ```go
-c := lp.CallerFor(r.Header)
+c := toft.CallerFor(r.Header)
 ```
 ```python
-lp.caller(req.headers)
+toft.caller(req.headers)
 ```
 ```r
 caller_role(); caller_can("editor")
@@ -40,7 +40,7 @@ This is the one to reach for in a request handler. See
 ## `who` — who they are
 
 ```js
-const who = await lp.who(req.headers);
+const who = await toft.who(req.headers);
 if (who?.role === "owner" || who?.isAdmin) renderAdminTab();
 ```
 
@@ -56,7 +56,7 @@ Cached for 60 seconds keyed on the blob; pass `refresh` to bypass.
 ## `viewer` — act as them
 
 ```js
-const me = lp.viewer(req.headers);
+const me = toft.viewer(req.headers);
 await me.jobs.start("reconcile", {});
 ```
 
@@ -77,7 +77,7 @@ If you have an admin screen, protect it yourself.
   send one. `caller()` verifies; reading the raw header does not.
 - **A role is not an identity.** Two people with the same role are
   indistinguishable, and nothing in the role tells you a human is there at all.
-- **A Launchpad administrator with no grant reads as `viewer`.** The header
+- **A Toft administrator with no grant reads as `viewer`.** The header
   carries no admin bit. If you need to know, ask `who`.
 - **Nobody-in-particular is assertable**, and it is a narrowing that one
   resolver refuses by name — an app cannot claim a run was started by somebody

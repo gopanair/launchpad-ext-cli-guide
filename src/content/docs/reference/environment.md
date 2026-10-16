@@ -1,6 +1,6 @@
 ---
 title: Environment variables
-description: What Launchpad puts in your app's environment, and what it never does.
+description: What Toft puts in your app's environment, and what it never does.
 ---
 
 ## What every app gets
@@ -22,23 +22,23 @@ a cookie `Path` already under the prefix is left alone.
 
 | | |
 |---|---|
-| `LAUNCHPAD_API_URL` | Where to call the platform back. |
-| `LAUNCHPAD_APP_ID`, `LAUNCHPAD_APP_SLUG` | This app's identity. |
-| `LAUNCHPAD_APP_TOKEN` | The app's own credential. Not set inside a job. |
-| `LAUNCHPAD_ROLE_KEY` | Verifies the signed role, locally. |
-| `LAUNCHPAD_SCRATCH_DIR` | Where `scratch_dir` lives. |
-| `LAUNCHPAD_STORAGE` | Resolves `storage("name")`. |
+| `TOFT_API_URL` | Where to call the platform back. |
+| `TOFT_APP_ID`, `TOFT_APP_SLUG` | This app's identity. |
+| `TOFT_APP_TOKEN` | The app's own credential. Not set inside a job. |
+| `TOFT_ROLE_KEY` | Verifies the signed role, locally. |
+| `TOFT_SCRATCH_DIR` | Where `scratch_dir` lives. |
+| `TOFT_STORAGE` | Resolves `storage("name")`. |
 
 ## Inside a job
 
 | | |
 |---|---|
-| `LAUNCHPAD_RUN_ID`, `LAUNCHPAD_JOB_NAME` | This run, and the job it is a run of. |
-| `LAUNCHPAD_JOB_TOKEN` | The run's credential — **exchanged, never extended**. It is also what the SDK sends notifications with, and it opens nothing else. |
-| `LAUNCHPAD_PARAMS` | The parameters, as JSON values. Each one is also `LAUNCHPAD_PARAM_<NAME>`, so a shell job need not parse JSON. |
-| `LAUNCHPAD_SCHEDULED_FOR` | The instant this run is for, RFC 3339 in the schedule's zone. **Absent** when nobody gave one — never set to now. |
-| `LAUNCHPAD_TRIGGER`, `LAUNCHPAD_TRIGGER_ROLE` | What started it, and as whom. |
-| `LAUNCHPAD_INPUT_URI`, `LAUNCHPAD_OUTPUT_URI` | Where the run reads and writes. |
+| `TOFT_RUN_ID`, `TOFT_JOB_NAME` | This run, and the job it is a run of. |
+| `TOFT_JOB_TOKEN` | The run's credential — **exchanged, never extended**. It is also what the SDK sends notifications with, and it opens nothing else. |
+| `TOFT_PARAMS` | The parameters, as JSON values. Each one is also `TOFT_PARAM_<NAME>`, so a shell job need not parse JSON. |
+| `TOFT_SCHEDULED_FOR` | The instant this run is for, RFC 3339 in the schedule's zone. **Absent** when nobody gave one — never set to now. |
+| `TOFT_TRIGGER`, `TOFT_TRIGGER_ROLE` | What started it, and as whom. |
+| `TOFT_INPUT_URI`, `TOFT_OUTPUT_URI` | Where the run reads and writes. |
 
 ## Your own
 
@@ -53,7 +53,7 @@ a running app.
 **Your app never inherits the platform's environment.** Not
 `os.Environ()`, not a passthrough, not a subset.
 
-Your app gets the variables Launchpad chose to give it plus the ones you set,
+Your app gets the variables Toft chose to give it plus the ones you set,
 and nothing else. A variable that works on your laptop because it was already in
 your shell will not be there.
 

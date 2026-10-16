@@ -4,7 +4,7 @@ description: Starting a different entrypoint of this app, as the app or as a per
 ---
 
 ```toml
-# launchpad.toml
+# toft.toml
 [jobs.reconcile]
 command = "python jobs/reconcile.py"
 timeout = 900
@@ -18,13 +18,13 @@ expect_within = "26h"              # optional; owners are told if it goes this l
 ```
 
 ```go
-run, err := lp.Jobs.Start(ctx, "reconcile", opts)
+run, err := toft.Jobs.Start(ctx, "reconcile", opts)
 ```
 ```js
-await lp.jobs.start("reconcile", { params });
+await toft.jobs.start("reconcile", { params });
 ```
 ```python
-lp.jobs.start("reconcile", params=params)
+toft.jobs.start("reconcile", params=params)
 ```
 ```r
 job_start("reconcile")
@@ -32,7 +32,7 @@ job_start("reconcile")
 
 ## What it actually does
 
-Runs a command `launchpad.toml` declares, **from the same release**, as a
+Runs a command `toft.toml` declares, **from the same release**, as a
 process of its own with a memory limit, a deadline and a durable record —
 **whatever mode your app runs in**.
 
@@ -43,7 +43,7 @@ should not depend on how the install happens to run apps.
 **Where it runs is the install's choice.** On an install with a cluster, every
 run gets a container. On one without, it runs on the install's own machine,
 under your app's account, in a process group and a working directory of its
-own. `lp job runs` marks a run that ran there. The one difference worth
+own. `toft job runs` marks a run that ran there. The one difference worth
 designing for: on the install's own machine the memory limit is **checked by
 sampling**, so a sudden spike can pass it before the run is stopped. A job that
 genuinely needs gigabytes belongs on an install with a cluster.
@@ -71,8 +71,8 @@ whatever the file says.
 ## As the app, or as a person
 
 ```js
-await lp.jobs.start("reconcile", { params });               // as the app
-await lp.viewer(req.headers).jobs.start("reconcile", {});   // as the person
+await toft.jobs.start("reconcile", { params });               // as the app
+await toft.viewer(req.headers).jobs.start("reconcile", {});   // as the person
 ```
 
 Two objects, not a flag. A flag would make the anonymous case the default
@@ -84,7 +84,7 @@ move a run out of somebody's name and into nobody's, which is exactly the thing
 an audit trail exists to prevent.
 
 ```js
-await lp.viewer(req.headers).jobs.mine("reconcile", { limit: 20 });
+await toft.viewer(req.headers).jobs.mine("reconcile", { limit: 20 });
 ```
 
 An app can only resolve the runs **it triggered**.
@@ -92,13 +92,13 @@ An app can only resolve the runs **it triggered**.
 ## The instant a run is for
 
 ```python
-lp.run.scheduled_for        # datetime, or None
+toft.run.scheduled_for        # datetime, or None
 ```
 ```js
-lp.run.scheduledFor         // Date, or null; scheduledForText keeps the zone offset
+toft.run.scheduledFor         // Date, or null; scheduledForText keeps the zone offset
 ```
 ```go
-at, ok := lp.CurrentRun().ScheduledFor()
+at, ok := toft.CurrentRun().ScheduledFor()
 ```
 ```r
 scheduled_for()             # POSIXct in UTC, or NULL; attr(x, "text") keeps the offset
@@ -108,7 +108,7 @@ scheduled_for()             # POSIXct in UTC, or NULL; attr(x, "text") keeps the
 if it waited behind a full queue and started at 03:40, and the value is written
 in the schedule's own zone. A retry carries its original's.
 
-**A manual run has one only if somebody names it** — `lp job run --for`, or the
+**A manual run has one only if somebody names it** — `toft job run --for`, or the
 *Run for* action on the app's Automation tab. It is **never defaulted to now**, so a
 re-run of Tuesday's work on Thursday processes Tuesday, and a job that finds no
 instant can decide for itself what that means. An app starting its own job does
@@ -117,12 +117,12 @@ not pass one: an app starting itself is acting now.
 A run your app started or listed carries the same instant as an RFC 3339 string,
 `""` when there is none — `run.scheduled_for` in Python, `run.ScheduledFor` in
 Go, and `run.scheduledFor` in Node. Note that in Node the same name is a string
-on a run you hold and a `Date` on `lp.run` inside the job.
+on a run you hold and a `Date` on `toft.run` inside the job.
 
 ## Parameters are never a command
 
 ```js
-await lp.jobs.start("reconcile", { params: { region: "emea" } });
+await toft.jobs.start("reconcile", { params: { region: "emea" } });
 ```
 
 Parameters are passed to your process as values. They are **never interpolated
@@ -131,7 +131,7 @@ into the command**, which is what makes it safe to let a viewer supply one.
 ## Waiting, and retries
 
 ```js
-const run = await lp.jobs.start("ingest", {});
+const run = await toft.jobs.start("ingest", {});
 await run.wait();
 ```
 
@@ -154,12 +154,12 @@ Retries are **opt-in, unattended-only, and never silent**.
   inside the job the SDK is fully present — `run` populated, `mounts()`
   answering, storage writable. It is the one way a document app does anything
   after its build. What it still cannot do is see a request.
-- **A batch app is nothing but jobs.** A `[batch]` table in `launchpad.toml`
+- **A batch app is nothing but jobs.** A `[batch]` table in `toft.toml`
   deploys a program with no web server — Node, Python, Go or R — and starts
   nothing; its work is its `[jobs]`. Restart, start and stop answer
   `no_service`, and it cannot have scheduled tasks. See
   [Deploying](../../cli/deploying/).
-- **A static app cannot have jobs at all** — a `launchpad.toml` declaring one
+- **A static app cannot have jobs at all** — a `toft.toml` declaring one
   fails the deploy with `manifest_invalid`, before anything is built. There is
   no runtime for a command to mean anything in.
 - A full queue is its own error, not a generic failure.
@@ -168,7 +168,7 @@ Retries are **opt-in, unattended-only, and never silent**.
 ## Inside the job
 
 ```js
-lp.run     // this run's own view of itself; null everywhere else
+toft.run     // this run's own view of itself; null everywhere else
 ```
 
 Report progress, read the payload, write output — all through `run`, and never
@@ -191,7 +191,7 @@ generic failure.
 exits, and its exit code decides how. So a job that records a result and then
 fails is a failed run, as it should be.
 
-**A job can send, and do nothing else as the app.** `lp.notify` — Slack, email,
+**A job can send, and do nothing else as the app.** `toft.notify` — Slack, email,
 any integration an administrator attached to the app — works inside a job, in
 all four languages, through the run's own credential. It passes the same gates
 as a send from the app, and is recorded the same way. That is how a batch app

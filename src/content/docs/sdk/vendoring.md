@@ -1,13 +1,13 @@
 ---
 title: Vendoring it
-description: lp sdk vendor, and why the SDK comes from the install rather than a registry.
+description: toft sdk vendor, and why the SDK comes from the install rather than a registry.
 ---
 
 ```bash
-lp sdk vendor
+toft sdk vendor
 ```
 
-Writes the install's own SDK into `.launchpad/sdk-<lang>/`.
+Writes the install's own SDK into `.toft/sdk-<lang>/`.
 
 ## Why not a registry
 
@@ -23,10 +23,10 @@ wrong, and it works on a network with no route to a public registry.
 | | |
 |---|---|
 | `--lang` | Detected from the tree when absent. A tree that is **two things at once is refused**, naming the flag, exit 2. |
-| `--dir` | Somewhere other than `.launchpad/`. |
+| `--dir` | Somewhere other than `.toft/`. |
 
 **A language the install does not carry is exit 2**, from the server's
-`sdk_language_unknown`. The set of languages is the *install's*, so `lp` never
+`sdk_language_unknown`. The set of languages is the *install's*, so `toft` never
 keeps its own copy of it and cannot go stale.
 
 ## Per language
@@ -42,20 +42,20 @@ for you to add. Overwriting a file you wrote would be the wrong trade.
 directory nobody installs changes nothing, so the command tells you what to run:
 
 ```bash
-pip install -e .launchpad/sdk-python
-npm install ./.launchpad/sdk-node
+pip install -e .toft/sdk-python
+npm install ./.toft/sdk-node
 ```
 
 **R** lands the package directory for `renv` to pick up.
 
 ## Which copy is this
 
-`lp sdk vendor` prints a **build id** for the copy it just wrote — twelve hex
+`toft sdk vendor` prints a **build id** for the copy it just wrote — twelve hex
 characters derived from the SDK's own bytes, not a version somebody declared and
 might forget to change.
 
 ```
-Wrote the python SDK (launchpad 0.3.0) to .launchpad/sdk-python — 14 files
+Wrote the python SDK (toft 0.3.0) to .toft/sdk-python — 14 files
   Build 9ed4b6bdfa26 — the deploy log names the copy your app was built with;
   they should match.
 ```
@@ -72,6 +72,6 @@ administrator's cue to rebuild the image, not a reason to stop your deploy.
 
 ## Committing it
 
-Commit `.launchpad/` if you want reproducible builds without a vendor step in
-CI. Re-run `lp sdk vendor` after the install is upgraded, and read the diff —
+Commit `.toft/` if you want reproducible builds without a vendor step in
+CI. Re-run `toft sdk vendor` after the install is upgraded, and read the diff —
 it is the most direct notice you get that the platform's surface moved.

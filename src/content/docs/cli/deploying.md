@@ -4,31 +4,31 @@ description: What gets sent, how the app is chosen, and the ignore rules.
 ---
 
 ```bash
-lp deploy
+toft deploy
 ```
 
 ## Choosing the app
 
 ```toml
-# launchpad.toml
+# toft.toml
 [app]
 slug = "phase-test"
 
 # a checkout that targets two installs says so, and neither is wrong
-[app.installs."https://staging.launchpad.corp"]
+[app.installs."https://staging.toft.corp"]
 slug = "phase-test-stg"
 ```
 
-`lp link <slug>` writes that table for you, and **resolves the slug against the
+`toft link <slug>` writes that table for you, and **resolves the slug against the
 install first**, so a typo fails at link time rather than at deploy time.
-`--local` writes `.launchpad.toml` and adds it to `.gitignore` instead.
+`--local` writes `.toft.toml` and adds it to `.gitignore` instead.
 
 Or pass `--app <slug>`.
 
 ## What goes in the bundle
 
 **`.gitignore` decides** — every one in the tree, `!` negations honoured, plus
-`.git/info/exclude`. `.launchpadignore` is **additional, never a replacement**.
+`.git/info/exclude`. `.toftignore` is **additional, never a replacement**.
 
 Git is never shelled out to, because a plain folder that is not a repository has
 to bundle too.
@@ -47,10 +47,10 @@ A bundled `.env*`, `*.pem`, `id_rsa*` or `*.key` gets one dimmed line and is
 ## Following it
 
 ```bash
-lp deploy --logs          # stream the build
-lp deploy --no-watch      # fire and return
-lp deploy --watch <id>    # rejoin one you left
-lp deploy --json          # for a script
+toft deploy --logs          # stream the build
+toft deploy --no-watch      # fire and return
+toft deploy --watch <id>    # rejoin one you left
+toft deploy --json          # for a script
 ```
 
 **`--watch` on a build that has already failed still tells you why**, not just
@@ -67,15 +67,15 @@ rather than a paragraph to match against.
 | Reason | Where the answer is |
 |---|---|
 | `source_unavailable` · `source_blocked` | The URL, the credential, or your administrator's source policy |
-| `dependency_blocked` | `lp deps` — the packages, the advisories, the fixed versions |
-| `unsupported_framework` · `manifest_invalid` · `runtime_version` | The declaration, or `launchpad.toml` |
+| `dependency_blocked` | `toft deps` — the packages, the advisories, the fixed versions |
+| `unsupported_framework` · `manifest_invalid` · `runtime_version` | The declaration, or `toft.toml` |
 | `build_failed` | The **build** log |
 | `publish_failed` | The artifact store |
 | `start_failed` · `not_ready` | The **app** log, for the second one |
 | `internal_error` | Retry, then tell somebody |
 
 **A deploy also says what it ignored.** Warnings are printed and carried in the
-`--json` result — a `[tasks]` table in `launchpad.toml` produces one, because
+`--json` result — a `[tasks]` table in `toft.toml` produces one, because
 tasks are not declared in the manifest.
 
 **A locked app is exit 2**, and the refusal names whether an administrator or the
@@ -89,7 +89,7 @@ did not read — so the versions installed can differ from the ones you pinned.
 ## A program with no web server
 
 ```toml
-# launchpad.toml
+# toft.toml
 [batch]
 language = "python"   # only when the tree has more than one language's project file
 
@@ -111,36 +111,36 @@ There is nothing to open, restart or stop; see [Jobs](../../sdk/jobs/).
 ## Creating rather than updating
 
 ```bash
-lp create .                       # create an app and deploy this tree into it
-lp create --repo <url> --branch x # the same command from the other door
+toft create .                       # create an app and deploy this tree into it
+toft create --repo <url> --branch x # the same command from the other door
 ```
 
-`lp create` **names the slug before claiming it** and confirms unless `--yes`,
+`toft create` **names the slug before claiming it** and confirms unless `--yes`,
 because it enters the estate's namespace. If the server uniquified the slug, it
 says so prominently.
 
 ## Redeploying from the repository
 
 ```bash
-lp redeploy
+toft redeploy
 ```
 
 Builds again from the repository the app names, and **uploads nothing**. It
-prints the repository and branch first — on an app that has been `lp deploy`ed
+prints the repository and branch first — on an app that has been `toft deploy`ed
 to, that is the surprise it exists to make visible.
 
-An app created from an upload is refused here, naming `lp deploy`.
+An app created from an upload is refused here, naming `toft deploy`.
 
 ## Publishing from RStudio instead
 
 R developers can keep the **Publish** button. In RStudio, add an account of the
 *Posit Connect* kind and give it the install's address. The sign-in goes
-through the same approval page as `lp login`, and what it creates is an
+through the same approval page as `toft login`, and what it creates is an
 ordinary personal key named *RStudio (rsconnect)*, listed with your other keys
 and revoked the same way. `rsconnect::deployApp()` then creates the app,
 uploads and deploys it, and shows the build log.
 
-What Connect has and Launchpad does not — content settings, access lists,
+What Connect has and Toft does not — content settings, access lists,
 vanity URLs, schedules — is not imitated. A name already taken is refused rather
 than given a suffix, because rsconnect finds its content again by name. For
-anything scripted, use `lp`.
+anything scripted, use `toft`.

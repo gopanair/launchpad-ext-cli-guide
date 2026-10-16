@@ -8,13 +8,13 @@ Two different things, and picking the wrong one is the usual mistake.
 ## Scratch — ephemeral, local, no network
 
 ```go
-dir := lp.ScratchDir("uploads")
+dir := toft.ScratchDir("uploads")
 ```
 ```js
-lp.scratchDir("uploads");
+toft.scratchDir("uploads");
 ```
 ```python
-lp.scratch_dir("uploads")
+toft.scratch_dir("uploads")
 ```
 ```r
 scratch_dir("uploads")
@@ -28,12 +28,12 @@ Never put anything there you would mind losing on a restart.
 ## A session's corner of it
 
 ```go
-lp.SessionScratchDir(sessionID)
-lp.NewSessionID()          // for a viewer who signed in nowhere
+toft.SessionScratchDir(sessionID)
+toft.NewSessionID()          // for a viewer who signed in nowhere
 ```
 ```js
-lp.sessionScratchDir(sessionId);
-lp.newSessionId();
+toft.sessionScratchDir(sessionId);
+toft.newSessionId();
 ```
 
 One browser login's own corner of scratch, hashed from the session id so two
@@ -43,12 +43,12 @@ is not signed in to anything.
 ## Storage — durable, named
 
 ```go
-path := lp.Storage("reports")             // a mapped volume, by name
-err := lp.Store("reports").Put(path, name)  // a file into an object store
+path := toft.Storage("reports")             // a mapped volume, by name
+err := toft.Store("reports").Put(path, name)  // a file into an object store
 ```
 ```js
-lp.storage("reports").path;
-await lp.store("reports").put(file);
+toft.storage("reports").path;
+await toft.store("reports").put(file);
 ```
 ```r
 storage("reports")$path
@@ -72,15 +72,15 @@ you read and a drop you write — and both arrive under the same name.
 The folder is what tells them apart:
 
 ```python
-lp.storage("drop", folder="backup").path
-lp.store("drop", folder="backup")
+toft.storage("drop", folder="backup").path
+toft.store("drop", folder="backup")
 ```
 ```js
-lp.storage("drop", { folder: "backup" });
+toft.storage("drop", { folder: "backup" });
 ```
 ```go
-lp.StorageIn("drop", "backup")     // Go has no keyword arguments
-lp.StoreIn("drop", "backup")
+toft.StorageIn("drop", "backup")     // Go has no keyword arguments
+toft.StoreIn("drop", "backup")
 ```
 ```r
 storage("drop", "backup")

@@ -3,16 +3,16 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
 /**
- * The Launchpad CLI and SDK guide.
+ * The Toft CLI and SDK guide.
  *
  * Built to a folder of HTML and committed as `dist/`, because that folder *is*
- * the deliverable: Launchpad never runs `npm install` or `astro build` for an
- * app, and `launchpad.toml`'s `[static] root = "dist"` is what tells the
+ * the deliverable: Toft never runs `npm install` or `astro build` for an
+ * app, and `toft.toml`'s `[static] root = "dist"` is what tells the
  * detector to serve this repo rather than refuse it for having a package.json.
  *
  * `base` is not optional. A static app is served under `/apps/{slug}/`, and a
  * root-absolute URL without that prefix asks the *platform* for the file and
- * gets a 404. The slug is reserved (`_` belongs to apps Launchpad installs
+ * gets a 404. The slug is reserved (`_` belongs to apps Toft installs
  * itself), so it cannot be taken by an ordinary app and this value cannot go
  * stale behind a rename.
  */
@@ -30,11 +30,11 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: "Launchpad",
-      logo: { src: "./src/assets/logo.svg", alt: "Launchpad" },
+      title: "Toft",
+      logo: { src: "./src/assets/logo.svg", alt: "Toft" },
       tagline: "CLI and SDK",
       description:
-        "The lp command-line client, and the app SDK your code calls back with.",
+        "The toft command-line client, and the app SDK your code calls back with.",
       components: {
         ThemeSelect: "./src/components/empty.astro",
         SocialIcons: "./src/components/empty.astro",
@@ -42,7 +42,7 @@ export default defineConfig({
       customCss: [
         "@fontsource-variable/geist",
         "@fontsource-variable/geist-mono",
-        "./src/styles/launchpad.css",
+        "./src/styles/toft.css",
       ],
       pagination: true,
       lastUpdated: false,
@@ -51,7 +51,7 @@ export default defineConfig({
         {
           label: "The CLI",
           items: [
-            { label: "Installing lp", slug: "cli/installing" },
+            { label: "Installing toft", slug: "cli/installing" },
             { label: "Signing in", slug: "cli/signing-in" },
             { label: "Deploying", slug: "cli/deploying" },
             { label: "The eighteen commands", slug: "cli/commands" },

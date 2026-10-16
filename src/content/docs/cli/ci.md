@@ -1,11 +1,11 @@
 ---
 title: CI and automation
-description: Running lp where nobody is watching.
+description: Running toft where nobody is watching.
 ---
 
 ## Unattended is detected, not remembered
 
-`lp` detects a non-interactive terminal rather than remembering a flag you set
+`toft` detects a non-interactive terminal rather than remembering a flag you set
 once. It will not prompt, and anything that needed a confirmation is **refused
 with exit 2** rather than hanging.
 
@@ -22,14 +22,14 @@ subset of what a personal key can do.
 
 ```yaml
 env:
-  LAUNCHPAD_URL:   https://launchpad.corp
-  LAUNCHPAD_TOKEN: ${{ secrets.LAUNCHPAD_DEPLOY_KEY }}
+  TOFT_URL:   https://toft.corp
+  TOFT_TOKEN: ${{ secrets.TOFT_DEPLOY_KEY }}
 ```
 
 Both, or neither. An environment token is used only when the install came from
-`LAUNCHPAD_URL` too — every other combination is exit 2 naming both halves.
+`TOFT_URL` too — every other combination is exit 2 naming both halves.
 
-On a runner with a mounted secret, prefer `LAUNCHPAD_TOKEN_FILE`: the path is
+On a runner with a mounted secret, prefer `TOFT_TOKEN_FILE`: the path is
 not sensitive, while an environment variable is readable through `/proc` and
 inherited by every child process.
 
@@ -38,21 +38,21 @@ inherited by every child process.
 ```bash
 set -euo pipefail
 
-lp deploy --logs --app my-app          # 1 if the build fails
-lp restart --wait --app my-app         # 1 if it does not come up
-lp job run migrate --app my-app --yes  # 1 if the migration fails
+toft deploy --logs --app my-app          # 1 if the build fails
+toft restart --wait --app my-app         # 1 if it does not come up
+toft job run migrate --app my-app --yes  # 1 if the migration fails
 ```
 
 Three real gates, no output parsing. Add `--json` if you want to record
 anything.
 
 A **batch app** — one that only runs jobs — has no service to restart, so drop
-the middle line; `lp restart` there is refused with `no_service`.
+the middle line; `toft restart` there is refused with `no_service`.
 
 ## Re-running a day that went wrong
 
 ```bash
-lp job run nightly-extract --app my-app --for 2026-10-06T03:00:00+01:00
+toft job run nightly-extract --app my-app --for 2026-10-06T03:00:00+01:00
 ```
 
 `--for` names the instant the run is for, and the job reads it back through the
@@ -73,7 +73,7 @@ Two properties to write your parser against:
 - **A refusal is a document too**, on stdout: `error`, `kind`, `code`, `exit`.
   The sentence still goes to stderr for whoever is watching. So a script never
   parses English to find out what happened — including for a bad flag, which
-  reads the same one line in both places, with the `lp:` prefix.
+  reads the same one line in both places, with the `toft:` prefix.
 
 **A failed deploy carries why in full**: the reason key, the whole message, and
 the detail the reason names — a tail of the build log, or the dependency
@@ -81,7 +81,7 @@ findings. So a program that gets `dependency_blocked` has something to bump,
 rather than a paragraph to regex.
 
 A deploy also reports **what it ignored** as `warnings`, printed and carried in
-the `--json` result. A `[tasks]` table in `launchpad.toml` produces one.
+the `--json` result. A `[tasks]` table in `toft.toml` produces one.
 
 ## Scanning the estate
 
@@ -93,7 +93,7 @@ Two neighbouring `/admin` reads are refused to **every** key class, deploy keys
 included: the reach inventory and the compliance surface. A scanner needs
 addresses; a posture is a thing a person reads from a browser.
 
-Send `X-Launchpad-Scan: 1` on scan traffic. It **grants nothing**; it only stops
+Send `X-Toft-Scan: 1` on scan traffic. It **grants nothing**; it only stops
 the request counting as evidence somebody wanted the app, so scanning does not
 make quiet apps look busy.
 

@@ -7,17 +7,17 @@ Every app has **one JSON document**, 256 KiB. No keys, no collections, no
 listing, no queries.
 
 ```go
-doc, err := lp.Data.Get(ctx)
-err = lp.Data.Set(ctx, settings)
-err = lp.Data.Update(ctx, bump)
+doc, err := toft.Data.Get(ctx)
+err = toft.Data.Set(ctx, settings)
+err = toft.Data.Update(ctx, bump)
 ```
 ```js
-await lp.data.get();
-await lp.data.set({ period });
-await lp.data.update((s) => { s.runs++; });
+await toft.data.get();
+await toft.data.set({ period });
+await toft.data.update((s) => { s.runs++; });
 ```
 ```python
-lp.data.get(); lp.data.set({"period": p}); lp.data.update(bump)
+toft.data.get(); toft.data.set({"period": p}); toft.data.update(bump)
 ```
 ```r
 app_data_get(); app_data_set(list(period = p))
@@ -30,7 +30,7 @@ have to read it back to find out what was saved, and the version you now hold is
 the one you just wrote.
 
 ```python
-saved = lp.data.set({"period": p}).data
+saved = toft.data.set({"period": p}).data
 ```
 
 ## The bytes are yours
@@ -57,7 +57,7 @@ handlers both incrementing a counter with `set` will lose writes. With `update`
 they will not.
 
 ```js
-await lp.data.update((s) => { s.runs = (s.runs ?? 0) + 1; });
+await toft.data.update((s) => { s.runs = (s.runs ?? 0) + 1; });
 ```
 
 A conflict that cannot be resolved surfaces as a version-conflict error rather

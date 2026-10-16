@@ -2,6 +2,6 @@ node_modules/
 .astro/
 *.log
 
-# dist/ is NOT ignored, deliberately. It is what Launchpad serves — see
-# launchpad.toml. Ignoring it would deploy an empty app whose build log says
+# dist/ is NOT ignored, deliberately. It is what Toft serves — see
+# toft.toml. Ignoring it would deploy an empty app whose build log says
 # every step succeeded.

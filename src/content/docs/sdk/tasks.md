@@ -9,14 +9,14 @@ runs in your app's own process, like any other request.
 ## Recognising one
 
 ```js
-const task = lp.task(req.headers);
+const task = toft.task(req.headers);
 if (task) { /* this is a firing, not a person */ }
 ```
 ```go
-task := lp.TaskFor(r.Header)
+task := toft.TaskFor(r.Header)
 ```
 ```python
-lp.task(req.headers)
+toft.task(req.headers)
 ```
 
 **`null` when the request is not a firing.** An ordinary visit to the same path
@@ -28,7 +28,7 @@ gets `null`, so one handler can serve both and behave differently.
 serving several can tell them apart without reading its own configuration back:
 
 ```python
-t = lp.task(req.headers)
+t = toft.task(req.headers)
 if t and t.name == "nightly":
     ...
 ```
@@ -40,7 +40,7 @@ the platform's business, not the handler's.
 ## A task may have no schedule at all
 
 The cron expression is optional. A task created without one is **on demand**:
-nothing fires it on a timer, and `Run now`, `lp task run` and your app's own
+nothing fires it on a timer, and `Run now`, `toft task run` and your app's own
 trigger all still do.
 
 Your handler cannot tell the difference and does not need to — a firing is a
@@ -48,7 +48,7 @@ firing. What changes is only whether anything fires it unasked.
 
 ## A schedule may name a time zone
 
-A schedule is read in UTC unless it names a zone — `lp task create --timezone
+A schedule is read in UTC unless it names a zone — `toft task create --timezone
 Europe/London`, or the Time zone field in the app's page. A zoned schedule
 follows the wall clock: `0 6 * * *` in London fires at 06:00 London time all
 year, once per scheduled time, through both daylight saving changes. Lists show
@@ -98,7 +98,7 @@ Do not assume a task request means nobody is there.
 
 ## Protect the path
 
-It is a path in your app, reachable like any other. `lp.task(headers)` tells you
+It is a path in your app, reachable like any other. `toft.task(headers)` tells you
 a request *is* a firing, but you should still give the endpoint a check of its
 own — a shared secret from an environment variable is the usual approach.
 
